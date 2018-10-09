@@ -1,8 +1,8 @@
 <template>
   <section class="module" :class="getComponentSize()">
     <p class="title">{{title}}</p>
-    <p class="subTitle">{{subTitle}}</p>
-    <component :is="componentName" />
+    <p class="subtitle">{{mutableSubtitle}}</p>
+    <component :is="componentName" @updateSubtitle="updateSubtitle"/>
   </section>
 </template>
 
@@ -31,16 +31,19 @@ export default {
     title: {
       type: String
     },
-    subTitle: {
+    subtitle: {
       type: String
     }
   },
   data () {
     return {
-
+      mutableSubtitle: this.subtitle
     }
   },
   methods: {
+    updateSubtitle (value) {
+      this.mutableSubtitle = value;
+    },
     getComponentSize () {
       return {
         'one': this.componentSize === 'one',
@@ -70,11 +73,11 @@ export default {
   .three {
     width: calc(100% - 60px);
   }
-  .title{
+  .title {
     font-size: 16px;
     margin-bottom: 5px;
   }
-  .subTitle{
+  .subtitle {
     font-size: 22px;
     margin-bottom: 20px;
   }
