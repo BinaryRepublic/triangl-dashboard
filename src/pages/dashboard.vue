@@ -1,29 +1,24 @@
 <template>
   <div>
     <div class="container-content">
-      <Module class="module two space-right">
-      </Module>
-      <Module class="module one"></Module>
+      <Canvas class="module two space-right" title="Customers"/>
+      <Canvas class="module one" title="Active Customers"/>
     </div>
   </div>
 </template>
 
 <script>
-import Module from '../components/default/Module.vue'
-import CountCustomer from '../components/default/diagrams/CountCustomer.vue'
+import Canvas from '../components/default/Canvas.vue'
+// import CountCustomer from '../components/default/diagrams/CountCustomer.vue'
 
 export default {
   components: {
-    Module,
-    CountCustomer
+    Canvas
+    // CountCustomer
   },
   data () {
     return {
-
     }
-  },
-  methods: {
-
   }
 }
 </script>
