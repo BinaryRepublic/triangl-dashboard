@@ -2,7 +2,7 @@
   <div>
     <header>
       <section class="container">
-        <h1 class="name">Triangl</h1>
+        <h1 class="header-title">{{title}}</h1>
       </section>
     </header>
   </div>
@@ -10,6 +10,9 @@
 
 <script>
 export default {
+  props: {
+    title: { type: String, default: null }
+  }
 }
 </script>
 <style lang="less">
@@ -18,8 +21,10 @@ header {
   width: 100%;
   height: 50px;
   background-color: rgb(250, 250, 250);
-  .name {
+
+  .header-title {
     margin-top: 10.5px;
+    margin-left: 10.5px;
   }
 }
 </style>

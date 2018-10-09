@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Header></Header>
+    <Header title="Triangl"></Header>
     <router-view/>
     <Footer></Footer>
   </div>
