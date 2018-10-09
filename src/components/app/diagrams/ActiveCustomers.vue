@@ -10,7 +10,6 @@ export default {
     this.$api.get('visitors/count')
     .then( (response) => {
       const total = response.data.total;
-      // console.log(this);
       this.$emit('updateSubtitle', total)
     })
     .catch(function (error) {

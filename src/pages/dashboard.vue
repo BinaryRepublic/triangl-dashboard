@@ -2,7 +2,7 @@
   <div>
     <div class="container-content">
       <Canvas componentSize="two" componentName="CountCustomers" title="Customers" subtitle="75"/>
-      <Canvas componentSize="one" componentName="ActiveCustomers" title="Active Customers" subtitle="..."/>
+      <Canvas type="blue" componentSize="one" componentName="ActiveCustomers" title="Active Customers" subtitle="..."/>
       <Canvas componentSize="one" componentName="PeakHours" title="Peak Hours"/>
       <Canvas componentSize="three" componentName="Map" title="Heat Map"/>
     </div>
