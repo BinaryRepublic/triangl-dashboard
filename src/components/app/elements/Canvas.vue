@@ -46,7 +46,7 @@ export default {
   },
   methods: {
     updateSubtitle (value) {
-      this.mutableSubtitle = value;
+      this.mutableSubtitle = value
     },
     getClasses () {
       return {
@@ -62,7 +62,7 @@ export default {
 <style lang="less">
   .module {
     float: left;
-    height: 500px;
+    height: 420px;
     box-shadow: 0 1px 3px 0 rgba(0, 0, 0, .2), 0 1px 1px 0 rgba(0, 0, 0, .14), 0 2px 1px -1px rgba(0, 0, 0, .12);
     border-radius: 2px;
     margin: 10px;
@@ -91,5 +91,4 @@ export default {
       margin-bottom: 20px;
     }
   }
-  
 </style>
