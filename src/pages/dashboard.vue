@@ -1,19 +1,19 @@
 <template>
   <div>
     <div class="container-content">
-      <GraphCanvas class="module two space-right" title="Customers"/>
-      <GraphCanvas class="module one" title="Active Customers"></GraphCanvas>
+      <Canvas class="module two space-right" title="Customers"/>
+      <Canvas class="module one" title="Active Customers"/>
     </div>
   </div>
 </template>
 
 <script>
-import GraphCanvas from '../components/default/GraphCanvas.vue'
+import Canvas from '../components/default/Canvas.vue'
 // import CountCustomer from '../components/default/diagrams/CountCustomer.vue'
 
 export default {
   components: {
-    GraphCanvas
+    Canvas
     // CountCustomer
   },
   data () {

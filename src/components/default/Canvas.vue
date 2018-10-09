@@ -1,6 +1,6 @@
 <template>
   <div>
-    <p id="graph-title">
+    <p id="canvas-title">
       {{title}}
     </p>
   </div>
@@ -9,7 +9,7 @@
 <script>
 export default {
   props: {
-    title: { type: String, default: 'Graph' }
+    title: { type: String, default: 'Canvas' }
   }
 }
 </script>
@@ -22,7 +22,7 @@ export default {
     box-shadow: 0 1px 3px 0 rgba(0,0,0,.2), 0 1px 1px 0 rgba(0,0,0,.14), 0 2px 1px -1px rgba(0,0,0,.12);
     border-radius: 2px;
 
-    #graph-title {
+    #canvas-title {
       font-size: 12pt;
       padding-top: 20pt;
       padding-left: 20pt;
