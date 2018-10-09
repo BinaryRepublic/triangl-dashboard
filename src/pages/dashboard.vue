@@ -1,20 +1,23 @@
 <template>
   <div>
     <div class="container-content">
-      <Canvas class="module two space-right" title="Customers"/>
-      <Canvas class="module one" title="Active Customers"/>
+      <Canvas componentSize="two" componentName="CountCustomers"/>
+      <Canvas componentSize="one" componentName="ActiveCustomers"/>
+      <Canvas componentSize="one" componentName="PeakHours"/>
+      <Canvas componentSize="three" componentName="Map"/>
     </div>
   </div>
 </template>
 
 <script>
-import Canvas from '../components/default/Canvas.vue'
-// import CountCustomer from '../components/default/diagrams/CountCustomer.vue'
+import Canvas from '../components/app/elements/Canvas.vue'
 
 export default {
+  mounted () {
+
+  },
   components: {
     Canvas
-    // CountCustomer
   },
   data () {
     return {
@@ -23,6 +26,6 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="less" scoped>
 
 </style>
