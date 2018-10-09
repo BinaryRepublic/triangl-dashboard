@@ -7,8 +7,8 @@
 </template>
 
 <script>
-import Header from '../components/default/Header.vue'
-import Footer from '../components/default/Footer.vue'
+import Header from '../components/app/elements/Header.vue'
+import Footer from '../components/app/elements/Footer.vue'
 
 export default {
   components: {
@@ -33,7 +33,7 @@ export default {
   .container-content {
     float: left;
     position: relative;
-    width: 1000px;
+    width: 1040px;
     left: 50%;
     margin-left: -500px;
     margin-top: 40px;
