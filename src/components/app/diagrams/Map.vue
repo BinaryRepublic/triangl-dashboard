@@ -1,6 +1,5 @@
 <template>
   <div id="container">
-    Heat Map
   </div>
 </template>
 

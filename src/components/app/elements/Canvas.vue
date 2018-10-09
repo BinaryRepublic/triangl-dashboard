@@ -1,5 +1,7 @@
 <template>
   <section class="module" :class="getComponentSize()">
+    <p class="title">{{title}}</p>
+    <p class="subTitle">{{subTitle}}</p>
     <component :is="componentName" />
   </section>
 </template>
@@ -25,6 +27,12 @@ export default {
     componentName: {
       type: String,
       required: true
+    },
+    title: {
+      type: String
+    },
+    subTitle: {
+      type: String
     }
   },
   data () {
@@ -61,5 +69,13 @@ export default {
   }
   .three {
     width: calc(100% - 60px);
+  }
+  .title{
+    font-size: 16px;
+    margin-bottom: 5px;
+  }
+  .subTitle{
+    font-size: 22px;
+    margin-bottom: 20px;
   }
 </style>
