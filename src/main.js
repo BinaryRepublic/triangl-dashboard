@@ -4,6 +4,12 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import VueResource from 'vue-resource'
+import axios from 'axios'
+const config = require('../config')
+
+Vue.prototype.$api = axios.create({
+  baseURL: config.API_ENDPOINT.mock
+})
 
 Vue.config.devtools = true
 
