@@ -1,6 +1,5 @@
 <template>
   <div id="container">
-    Active Customers Amount
   </div>
 </template>
 
