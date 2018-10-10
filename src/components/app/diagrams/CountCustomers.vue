@@ -22,7 +22,6 @@ export default {
           this.chartData.datasets[0].data.push(data.data[x].count)
           date = data.data[x].to
           newDate = date.substring(11, 16)
-          console.log(newDate)
           this.chartData.labels.push(newDate)
         }
         this.$emit('updateSubtitle', total)
