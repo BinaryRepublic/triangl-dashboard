@@ -4,13 +4,8 @@
       <canvas class="canvasBox" :width="canvasWidth" :height="canvasHeight"></canvas>
     </div>
     <div class="sideBar">
-      <p>Average Dwell Time:</p>
-      <ul>
-        <li v-for="(area, index) in areas" v-bind:key="index" >
-          <p>P1({{area.p1.x}}/{{area.p1.y}}) - P2({{area.p2.x}}/{{area.p2.y}})</p>
-          <p>{{area.dwellTime}}</p>
-        </li>
-      </ul>
+      <p>Area: ({{ hoveredArea.x }}/{{ hoveredArea.y }})</p>
+      <p>Average Dwelltime: {{ hoveredArea.dwellTime }}</p>
     </div>
   </div>
 </template>
@@ -23,6 +18,29 @@ var context = []
 
 export default {
   mounted () {
+    const canvas = d3.select('.canvasBox').call(d3.zoom().scaleExtent([1, 5]).on('zoom', this.zoom))
+    for (var z = 0; z < this.areas.length; z++) {
+      context.push(canvas.node().getContext('2d'))
+    }
+    this.drawRect()
+    var areasNew = this.areas
+    var newHoveredArea = this.hoveredArea
+    console.log(this.hoveredArea)
+    canvas.on('mousemove', function () {
+      var rect = this.getBoundingClientRect()
+      var x = d3.event.clientX - rect.left
+      var y = d3.event.clientY - rect.top
+      for (var k = 0; k < areasNew.length; k++) {
+        var rectangle = areasNew[k]
+        if (x >= rectangle.p1.x && x <= rectangle.p1.x + rectangle.w && y >= rectangle.p1.y && y <= rectangle.p1.y + rectangle.h) {
+          newHoveredArea.x = rectangle.p1.x
+          newHoveredArea.y = rectangle.p1.y
+          newHoveredArea.dwellTime = rectangle.dwellTime
+          newHoveredArea.dwellTime = Math.floor(newHoveredArea.dwellTime / 60) + ':' + ('0' + Math.floor(newHoveredArea.dwellTime % 60)).slice(-2)
+        }
+      }
+    })
+    this.hoveredArea.dwellTime = newHoveredArea.dwellTime
     this.$api.get('visitors/areas/duration')
       .then((response) => {
         const data = response.data
@@ -47,24 +65,29 @@ export default {
         {
           'p1': { 'x': 0, 'y': 0 },
           'p2': { 'x': 300, 'y': 150 },
-          'dwellTime': ''
+          'dwellTime': '156'
         },
         {
           'p1': { 'x': 300, 'y': 0 },
           'p2': { 'x': 600, 'y': 150 },
-          'dwellTime': ''
+          'dwellTime': '258'
         },
         {
           'p1': { 'x': 0, 'y': 150 },
           'p2': { 'x': 300, 'y': 300 },
-          'dwellTime': ''
+          'dwellTime': '59'
         },
         {
           'p1': { 'x': 300, 'y': 150 },
           'p2': { 'x': 600, 'y': 300 },
-          'dwellTime': ''
+          'dwellTime': '86'
         }
-      ]
+      ],
+      hoveredArea: {
+        'x': '',
+        'y': '',
+        'dwellTime': ''
+      }
     }
   },
   methods: {
@@ -78,10 +101,8 @@ export default {
       for (var j in this.areas) {
         var rect = this.areas[j]
         var opacity = rect.dwellTime / maxDwellTime
-        console.log(opacity)
         context[j].fillStyle = 'rgba(255, 0, 0, ' + opacity + ')'
-        context[j].rect(rect.p1.x, rect.p1.y, 300, 150)
-        context[j].fill()
+        context[j].fillRect(rect.p1.x, rect.p1.y, 300, 150)
       }
     }
   }
