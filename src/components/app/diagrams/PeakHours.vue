@@ -64,6 +64,9 @@ export default {
     chart.container(this.$el);
     chart.labels(false);
     chart.draw();
+
+    let creditsElement = document.getElementsByClassName('anychart-credits')[0];
+    creditsElement.parentNode.removeChild(creditsElement);
   },
   data () {
     return {
