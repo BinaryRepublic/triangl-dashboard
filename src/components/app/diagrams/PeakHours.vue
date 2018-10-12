@@ -63,6 +63,7 @@ export default {
     const chart = anychart.heatMap(chartData);
     chart.container(this.$el);
     chart.labels(false);
+    chart.legend(true);
     chart.draw();
 
     let creditsElement = document.getElementsByClassName('anychart-credits')[0];
