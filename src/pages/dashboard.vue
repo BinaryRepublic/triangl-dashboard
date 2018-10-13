@@ -14,13 +14,13 @@ import Canvas from '../components/app/elements/Canvas.vue'
 
 export default {
   mounted () {
-
   },
   components: {
     Canvas
   },
   data () {
     return {
+
     }
   }
 }

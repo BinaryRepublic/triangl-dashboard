@@ -15,6 +15,11 @@
 import * as d3 from 'd3'
 
 var context = []
+var backgroundImage
+var imageRatio = 2
+var imageSize = { width: '', height: '' }
+var difWidth
+var difHeight
 
 export default {
   mounted () {
@@ -22,16 +27,18 @@ export default {
     for (var z = 0; z < this.areas.length; z++) {
       context.push(canvas.node().getContext('2d'))
     }
+    this.createImage()
+    // context[0].globalCompositeOperation = 'destination-atop'
     this.drawRect()
     var areasNew = this.areas
     var newHoveredArea = this.hoveredArea
-    console.log(this.hoveredArea)
     canvas.on('mousemove', function () {
       var rect = this.getBoundingClientRect()
       var x = d3.event.clientX - rect.left
       var y = d3.event.clientY - rect.top
       for (var k = 0; k < areasNew.length; k++) {
         var rectangle = areasNew[k]
+        // console.log(rectangle.p1.x, rectangle.p1.y)
         if (x >= rectangle.p1.x && x <= rectangle.p1.x + rectangle.w && y >= rectangle.p1.y && y <= rectangle.p1.y + rectangle.h) {
           newHoveredArea.x = rectangle.p1.x
           newHoveredArea.y = rectangle.p1.y
@@ -41,21 +48,21 @@ export default {
       }
     })
     this.hoveredArea.dwellTime = newHoveredArea.dwellTime
-    this.$api.get('visitors/areas/duration')
-      .then((response) => {
-        const data = response.data
-        for (var x = 0; x < data.data.length; x++) {
-          this.areas[x].dwellTime = data.data[x].dwellTime
-        }
-        const canvas = d3.select('.canvasBox').call(d3.zoom().scaleExtent([1, 5]).on('zoom', this.zoom))
-        for (var z = 0; z < this.areas.length; z++) {
-          context.push(canvas.node().getContext('2d'))
-        }
-        this.drawRect()
-      })
-      .catch(function (error) {
-        console.log(error)
-      })
+    // this.$api.get('visitors/areas/duration')
+    //   .then((response) => {
+    //     const data = response.data
+    //     for (var x = 0; x < data.data.length; x++) {
+    //       this.areas[x].dwellTime = data.data[x].dwellTime
+    //     }
+    //     const canvas = d3.select('.canvasBox').call(d3.zoom().scaleExtent([1, 5]).on('zoom', this.zoom))
+    //     for (var z = 0; z < this.areas.length; z++) {
+    //       context.push(canvas.node().getContext('2d'))
+    //     }
+    //     this.drawRect()
+    //   })
+    //   .catch(function (error) {
+    //     console.log(error)
+    //   })
   },
   data () {
     return {
@@ -63,24 +70,32 @@ export default {
       canvasHeight: 300,
       areas: [
         {
-          'p1': { 'x': 0, 'y': 0 },
-          'p2': { 'x': 300, 'y': 150 },
-          'dwellTime': '156'
+          'p1': { 'x': 0, 'y': 149 },
+          'p2': { 'x': 203, 'y': 300 },
+          'dwellTime': '126',
+          'w': 203,
+          'h': 151
         },
         {
-          'p1': { 'x': 300, 'y': 0 },
-          'p2': { 'x': 600, 'y': 150 },
-          'dwellTime': '258'
+          'p1': { 'x': 203, 'y': 149 },
+          'p2': { 'x': 393, 'y': 300 },
+          'dwellTime': '208',
+          'w': 190,
+          'h': 151
         },
         {
-          'p1': { 'x': 0, 'y': 150 },
-          'p2': { 'x': 300, 'y': 300 },
-          'dwellTime': '59'
-        },
-        {
-          'p1': { 'x': 300, 'y': 150 },
+          'p1': { 'x': 393, 'y': 190 },
           'p2': { 'x': 600, 'y': 300 },
-          'dwellTime': '86'
+          'dwellTime': '49',
+          'w': 207,
+          'h': 110
+        },
+        {
+          'p1': { 'x': 506, 'y': 0 },
+          'p2': { 'x': 600, 'y': 191 },
+          'dwellTime': '96',
+          'w': 94,
+          'h': 190
         }
       ],
       hoveredArea: {
@@ -91,6 +106,31 @@ export default {
     }
   },
   methods: {
+    createImage () {
+      var canvasRatio = this.canvasWidth / this.canvasHeight
+      if (imageRatio > canvasRatio) {
+        imageSize.width = this.canvasWidth
+        imageSize.height = imageSize.width / imageRatio
+        difHeight = (this.canvasHeight - imageSize.height) / 2
+        difWidth = 0
+      } else if (imageRatio < canvasRatio) {
+        imageSize.height = this.canvasHeight
+        imageSize.width = imageSize.height * imageRatio
+        difWidth = (this.canvasWidth - imageSize.width) / 2
+        difHeight = 0
+      } else {
+        imageSize.width = this.canvasWidth
+        imageSize.height = this.canvasHeight
+        difWidth = 0
+        difHeight = 0
+      }
+      this.image = [difWidth, difHeight]
+      backgroundImage = new Image()
+      backgroundImage.src = '../static/campus.svg'
+      backgroundImage.onload = () => {
+        context[0].drawImage(backgroundImage, difWidth, difHeight, imageSize.width, imageSize.height)
+      }
+    },
     drawRect () {
       var dwellTimes = []
       for (var i = 0; i < this.areas.length; i++) {
@@ -101,8 +141,9 @@ export default {
       for (var j in this.areas) {
         var rect = this.areas[j]
         var opacity = rect.dwellTime / maxDwellTime
-        context[j].fillStyle = 'rgba(255, 0, 0, ' + opacity + ')'
-        context[j].fillRect(rect.p1.x, rect.p1.y, 300, 150)
+        context[j].fillStyle = 'rgba(13, 158, 248, ' + opacity + ')'
+        console.log(rect.w)
+        context[j].fillRect(rect.p1.x, rect.p1.y, rect.w, rect.h)
       }
     }
   }
@@ -113,7 +154,6 @@ export default {
     float: left;
     .canvasBox{
       border: 1px solid black;
-      padding: 0;
     }
   }
   .sideBar{
