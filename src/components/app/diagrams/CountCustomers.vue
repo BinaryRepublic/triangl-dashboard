@@ -13,23 +13,23 @@ Chart.defaults.global.defaultFontColor = 'rgb(170, 170, 170)'
 export default {
   name: 'CountCustomer',
   mounted () {
-    this.$api.get('visitors/count')
-      .then((response) => {
-        const data = response.data
-        const total = data.total
-        var date, newDate
-        for (var x = 0; x < data.data.length; x++) {
-          this.chartData.datasets[0].data.push(data.data[x].count)
-          date = data.data[x].to
-          newDate = date.substring(11, 16)
-          this.chartData.labels.push(newDate)
-        }
-        this.$emit('updateSubtitle', total)
-        this.createChart('countCustomersGraph')
-      })
-      .catch(function (error) {
-        console.log(error)
-      })
+    // this.$api.get('visitors/count')
+    //   .then((response) => {
+    //     const data = response.data
+    //     const total = data.total
+    //     var date, newDate
+    //     for (var x = 0; x < data.data.length; x++) {
+    //       this.chartData.datasets[0].data.push(data.data[x].count)
+    //       date = data.data[x].to
+    //       newDate = date.substring(11, 16)
+    //       this.chartData.labels.push(newDate)
+    //     }
+    //     this.$emit('updateSubtitle', total)
+    //     this.createChart('countCustomersGraph')
+    //   })
+    //   .catch(function (error) {
+    //     console.log(error)
+    //   })
   },
   data () {
     return {

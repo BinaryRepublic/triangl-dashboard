@@ -18,9 +18,14 @@
     "axios": "^0.18.0",
     "chart.js": "^2.7.2",
     "d3": "^5.7.0",
+    "date-fns": "^1.29.0",
     "vue": "^2.5.2",
+    "vue-rangedate-picker": "^0.3.4",
     "vue-resource": "^1.5.1",
-    "vue-router": "^3.0.1"
+    "vue-router": "^3.0.1",
+    "vue2-daterange-picker": "^0.1.1",
+    "vuetify": "^1.2.9",
+    "vuetify-daterange-picker": "^2.5.0"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.2",
