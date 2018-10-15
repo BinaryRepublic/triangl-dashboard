@@ -25,7 +25,8 @@
     "vue-router": "^3.0.1",
     "vue2-daterange-picker": "^0.1.1",
     "vuetify": "^1.2.9",
-    "vuetify-daterange-picker": "^2.5.0"
+    "vuetify-daterange-picker": "^2.5.0",
+    "vuex": "^3.0.1"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.2",

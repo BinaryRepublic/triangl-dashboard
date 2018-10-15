@@ -142,7 +142,6 @@ export default {
         var rect = this.areas[j]
         var opacity = rect.dwellTime / maxDwellTime
         context[j].fillStyle = 'rgba(13, 158, 248, ' + opacity + ')'
-        console.log(rect.w)
         context[j].fillRect(rect.p1.x, rect.p1.y, rect.w, rect.h)
       }
     }
