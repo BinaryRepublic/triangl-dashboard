@@ -6,8 +6,8 @@
       :presetRanges="{
         today: today(),
         yesterday: yesterday(),
-        last7: last7(),
-        last14days: last14days()
+        last7Days: last7Days(),
+        last14Days: last14Days()
       }"
       :i18n="language"
     />
@@ -56,12 +56,12 @@ export default {
         }
       }
     },
-    last7 () {
+    last7Days () {
       const n = new Date()
       const start = new Date(n.getFullYear(), n.getMonth(), n.getDate() - 5)
       const end = new Date(n.getFullYear(), n.getMonth(), n.getDate() + 1, 23, 59)
       return {
-        label: 'Last 7',
+        label: 'Last 7 Days',
         active: true,
         dateRange: {
           start: start,
@@ -69,10 +69,10 @@ export default {
         }
       }
     },
-    last14days () {
+    last14Days () {
       const n = new Date()
       const start = new Date(n.getFullYear(), n.getMonth(), n.getDate() - 12)
-      const end = new Date(n.getFullYear(), n.getMonth(), n.getDate() + 1)
+      const end = new Date(n.getFullYear(), n.getMonth(), n.getDate() + 1, 23, 59)
       return {
         label: 'Last 14 Days',
         active: true,
@@ -82,28 +82,6 @@ export default {
         }
       }
     }
-    // last30days () {
-    //   const start30DaysAgo = new Date(n.getFullYear(), n.getMonth(), n.getDate() - 29, 0, 0)
-    //   return {
-    //     label: 'Last 30 Days',
-    //     active: true,
-    //     dateRange: {
-    //       start: start30DaysAgo,
-    //       end: endToday
-    //     }
-    //   }
-    // },
-    // last90days () {
-    //   const start90DaysAgo = new Date(n.getFullYear(), n.getMonth(), n.getDate() - 89, 0, 0)
-    //   return {
-    //     label: 'Last 90 Days',
-    //     active: true,
-    //     dateRange: {
-    //       start: start90DaysAgo,
-    //       end: endToday
-    //     }
-    //   }
-    // }
   }
 }
 
