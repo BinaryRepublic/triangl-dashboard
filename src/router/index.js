@@ -10,14 +10,15 @@ Vue.use(Router)
 
 export default new Router({
   routes: [
+    // {
+    //   path: '/',
+    //   name: 'LayoutLanding',
+    //   component: LayoutLanding,
+    //   children: []
+    // },
     {
+      // path: '/app',
       path: '/',
-      name: 'LayoutLanding',
-      component: LayoutLanding,
-      children: []
-    },
-    {
-      path: '/app',
       name: 'LayoutApp',
       component: LayoutApp,
       children: [
