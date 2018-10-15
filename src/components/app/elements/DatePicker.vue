@@ -1,17 +1,27 @@
 <template>
   <div>
-    <VueRangedatePicker class="datePickerGlobal" :presetRanges="{today: today(), yesterday: yesterday(), last7days: last7days(), last30days: last30days(), last90days: last90days()}" :i18n="language"></VueRangedatePicker>
+    <VueRangedatePicker
+      class="datePickerGlobal"
+      @selected="(e) => { $emit('selected', e) }"
+      :presetRanges="{
+        today: today(),
+        yesterday: yesterday(),
+        last7: last7(),
+        last14days: last14days()
+      }"
+      :i18n="language"
+    />
   </div>
 </template>
 
 <script>
 import VueRangedatePicker from 'vue-rangedate-picker'
-const n = new Date()
-const endToday = new Date(n.getFullYear(), n.getMonth(), n.getDate() + 1, 23, 59, 59)
 
 export default {
   components: {
     VueRangedatePicker
+  },
+  mounted () {
   },
   data () {
     return {
@@ -21,7 +31,9 @@ export default {
   methods: {
     today () {
       const n = new Date()
-      const startToday = new Date(n.getFullYear(), n.getMonth(), n.getDate() + 1, 0, 0, 0)
+      const startToday = new Date(n.getFullYear(), n.getMonth(), n.getDate() + 1, 0, 0)
+      const endToday = new Date(n.getFullYear(), n.getMonth(), n.getDate() + 1, 23, 59, 59)
+      console.log(startToday)
       return {
         label: 'Today',
         active: true,
@@ -33,50 +45,65 @@ export default {
     },
     yesterday () {
       const n = new Date()
-      const startYesterday = new Date(n.getFullYear(), n.getMonth(), n.getDate(), 0, 0, 0)
-      const endYesterday = new Date(n.getFullYear(), n.getMonth(), n.getDate(), 23, 59, 59)
+      const start = new Date(n.getFullYear(), n.getMonth(), n.getDate(), 0, 0)
+      const end = new Date(n.getFullYear(), n.getMonth(), n.getDate(), 23, 59, 59)
       return {
         label: 'Yesterday',
         active: true,
         dateRange: {
-          start: startYesterday,
-          end: endYesterday
+          start: start,
+          end: end
         }
       }
     },
-    last7days () {
-      const start7DaysAgo = new Date(n.getFullYear(), n.getMonth(), n.getDate() - 6, 0, 0)
+    last7 () {
+      const n = new Date()
+      const start = new Date(n.getFullYear(), n.getMonth(), n.getDate() - 5)
+      const end = new Date(n.getFullYear(), n.getMonth(), n.getDate() + 1, 23, 59)
       return {
-        label: 'Last 7 Days',
+        label: 'Last 7',
         active: true,
         dateRange: {
-          start: start7DaysAgo,
-          end: endToday
+          start: start,
+          end: end
         }
       }
     },
-    last30days () {
-      const start30DaysAgo = new Date(n.getFullYear(), n.getMonth(), n.getDate() - 29, 0, 0)
+    last14days () {
+      const n = new Date()
+      const start = new Date(n.getFullYear(), n.getMonth(), n.getDate() - 12)
+      const end = new Date(n.getFullYear(), n.getMonth(), n.getDate() + 1)
       return {
-        label: 'Last 30 Days',
+        label: 'Last 14 Days',
         active: true,
         dateRange: {
-          start: start30DaysAgo,
-          end: endToday
-        }
-      }
-    },
-    last90days () {
-      const start90DaysAgo = new Date(n.getFullYear(), n.getMonth(), n.getDate() - 89, 0, 0)
-      return {
-        label: 'Last 90 Days',
-        active: true,
-        dateRange: {
-          start: start90DaysAgo,
-          end: endToday
+          start: start,
+          end: end
         }
       }
     }
+    // last30days () {
+    //   const start30DaysAgo = new Date(n.getFullYear(), n.getMonth(), n.getDate() - 29, 0, 0)
+    //   return {
+    //     label: 'Last 30 Days',
+    //     active: true,
+    //     dateRange: {
+    //       start: start30DaysAgo,
+    //       end: endToday
+    //     }
+    //   }
+    // },
+    // last90days () {
+    //   const start90DaysAgo = new Date(n.getFullYear(), n.getMonth(), n.getDate() - 89, 0, 0)
+    //   return {
+    //     label: 'Last 90 Days',
+    //     active: true,
+    //     dateRange: {
+    //       start: start90DaysAgo,
+    //       end: endToday
+    //     }
+    //   }
+    // }
   }
 }
 
