@@ -22,6 +22,11 @@ var difWidth
 var difHeight
 
 export default {
+  props: {
+    selected: {
+      type: Object
+    }
+  },
   mounted () {
     const canvas = d3.select('.canvasBox').call(d3.zoom().scaleExtent([1, 5]).on('zoom', this.zoom))
     for (var z = 0; z < this.areas.length; z++) {
@@ -29,7 +34,7 @@ export default {
     }
     this.createImage()
     // context[0].globalCompositeOperation = 'destination-atop'
-    this.drawRect()
+    // this.drawRect()
     var areasNew = this.areas
     var newHoveredArea = this.hoveredArea
     canvas.on('mousemove', function () {
@@ -48,52 +53,96 @@ export default {
       }
     })
     this.hoveredArea.dwellTime = newHoveredArea.dwellTime
-    // this.$api.get('visitors/areas/duration')
-    //   .then((response) => {
-    //     const data = response.data
-    //     for (var x = 0; x < data.data.length; x++) {
-    //       this.areas[x].dwellTime = data.data[x].dwellTime
-    //     }
-    //     const canvas = d3.select('.canvasBox').call(d3.zoom().scaleExtent([1, 5]).on('zoom', this.zoom))
-    //     for (var z = 0; z < this.areas.length; z++) {
-    //       context.push(canvas.node().getContext('2d'))
-    //     }
-    //     this.drawRect()
-    //   })
-    //   .catch(function (error) {
-    //     console.log(error)
-    //   })
+    this.apiRequest()
+  },
+  watch: {
+    selected: {
+      handler: function (val) {
+        console.log('Map yes')
+        this.requestData.from = new Date(val.startDate.getFullYear(), val.startDate.getMonth(), val.startDate.getDate() - 1).toISOString()
+        this.requestData.to = new Date(val.endDate.getFullYear(), val.endDate.getMonth(), val.endDate.getDate() - 1, 23, 59, 59).toISOString()
+        this.apiRequest()
+      },
+      deep: true
+    }
   },
   data () {
     return {
+      requestData: {
+        'mapId': '3f18f9da-93d1-4319-95bd-702d24f48708',
+        'from': this.selected.startDate,
+        'to': this.selected.endDate,
+        'areaDtos': [
+          {
+            'corner1': {
+              'x': 0,
+              'y': 149
+            },
+            'corner2': {
+              'x': 203,
+              'y': 300
+            }
+          },
+          {
+            'corner1': {
+              'x': 203,
+              'y': 149
+            },
+            'corner2': {
+              'x': 393,
+              'y': 300
+            }
+          },
+          {
+            'corner1': {
+              'x': 393,
+              'y': 190
+            },
+            'corner2': {
+              'x': 600,
+              'y': 300
+            }
+          },
+          {
+            'corner1': {
+              'x': 506,
+              'y': 0
+            },
+            'corner2': {
+              'x': 600,
+              'y': 191
+            }
+          }
+        ]
+      },
       canvasWidth: 600,
       canvasHeight: 300,
       areas: [
         {
           'p1': { 'x': 0, 'y': 149 },
           'p2': { 'x': 203, 'y': 300 },
-          'dwellTime': '126',
+          'dwellTime': '',
           'w': 203,
           'h': 151
         },
         {
           'p1': { 'x': 203, 'y': 149 },
           'p2': { 'x': 393, 'y': 300 },
-          'dwellTime': '208',
+          'dwellTime': '',
           'w': 190,
           'h': 151
         },
         {
           'p1': { 'x': 393, 'y': 190 },
           'p2': { 'x': 600, 'y': 300 },
-          'dwellTime': '49',
+          'dwellTime': '',
           'w': 207,
           'h': 110
         },
         {
           'p1': { 'x': 506, 'y': 0 },
           'p2': { 'x': 600, 'y': 191 },
-          'dwellTime': '96',
+          'dwellTime': '',
           'w': 94,
           'h': 190
         }
@@ -106,6 +155,29 @@ export default {
     }
   },
   methods: {
+    apiRequest () {
+      console.log(this.requestData)
+      this.$api.post('visitors/areas/duration', this.requestData, {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+        .then((response) => {
+          const data = response.data
+          console.log(data)
+          for (var x = 0; x < data.length; x++) {
+            this.areas[x].dwellTime = data[x].dwellTime
+          }
+          const canvas = d3.select('.canvasBox').call(d3.zoom().scaleExtent([1, 5]).on('zoom', this.zoom))
+          for (var z = 0; z < this.areas.length; z++) {
+            context.push(canvas.node().getContext('2d'))
+          }
+          this.drawRect()
+        })
+        .catch(function (error) {
+          console.log(error)
+        })
+    },
     createImage () {
       var canvasRatio = this.canvasWidth / this.canvasHeight
       if (imageRatio > canvasRatio) {

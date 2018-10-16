@@ -20,31 +20,18 @@ export default {
   watch: {
     selected: {
       handler: function (val) {
-        console.log(val)
-        // const n = new Date()
-        // var today = new Date(n.getFullYear(), n.getMonth(), n.getDate() + 1, 0, 0, 1).toISOString()
-        // var yesterday = new Date(n.getFullYear(), n.getMonth(), n.getDate(), 0, 0, 1).toISOString()
-        // var last7Days = new Date(n.getFullYear(), n.getMonth(), n.getDate() - 6, 0, 1).toISOString()
-        // var last14Days = new Date(n.getFullYear(), n.getMonth(), n.getDate() - 13, 0, 1).toISOString()
-
         this.requestData.from = new Date (val.startDate.getFullYear(), val.startDate.getMonth(), val.startDate.getDate() -1).toISOString()
-        this.requestData.to = new Date (val.endDate.getFullYear(), val.endDate.getMonth(), val.endDate.getDate() -1, 23, 59).toISOString()
-        console.log(this.requestData.from)
-        console.log(this.requestData.to)
+        this.requestData.to = new Date (val.endDate.getFullYear(), val.endDate.getMonth(), val.endDate.getDate() -1, 23, 59, 59).toISOString()
 
         var dateObjFrom = new Date(this.requestData.from)
         var dateObjTo = new Date(this.requestData.to)
         var diffMilliSeconds = Math.abs(dateObjFrom - dateObjTo)
-        console.log(diffMilliSeconds)
         var diffDays = this.convertMillisecondsToDays(diffMilliSeconds)
-        console.log(diffDays.days)
 
         if (diffDays.days <= 1) {
-          console.log('one day')
           this.requestData.dataPointCount = 24
           this.filter.type = 'hours'
         } else if (diffDays.days > 1) {
-          console.log('more days')
           this.requestData.dataPointCount = diffDays.days
           this.filter.type = 'days'
         }
@@ -54,6 +41,18 @@ export default {
     }
   },
   mounted () {
+    var dateObjFrom = new Date(this.requestData.from)
+    var dateObjTo = new Date(this.requestData.to)
+    var diffMilliSeconds = Math.abs(dateObjFrom - dateObjTo)
+    var diffDays = this.convertMillisecondsToDays(diffMilliSeconds)
+
+    if (diffDays.days <= 1) {
+      this.requestData.dataPointCount = 24
+      this.filter.type = 'hours'
+    } else if (diffDays.days > 1) {
+      this.requestData.dataPointCount = diffDays.days
+      this.filter.type = 'days'
+    }
     this.apiRequest()
   },
   data () {
@@ -62,6 +61,8 @@ export default {
         customerId: 'c1',
         from: this.selected.startDate,
         to: this.selected.endDate,
+        // from: '2018-09-20T13:49:09.404141Z',
+        // to: '2018-09-30T13:49:09.404141Z',
         dataPointCount: 10
       },
       filter: {
@@ -98,19 +99,19 @@ export default {
       })
         .then((response) => {
           this.chartData.labels = []
+          this.chartData.datasets[0].data = []
           const data = response.data
+          console.log(data)
           const total = data.total
           for (var x = 0; x < data.data.length; x++) {
             this.chartData.datasets[0].data.push(data.data[x].count)
             if (this.filter.type === 'hours') {
-              console.log('hours')
               var dateToIso = data.data[x].to
               var dateToObj = new Date(dateToIso)
               var newDateHour = dateToObj.getHours()
               var newDateMinutes = dateToObj.getMinutes()
               this.chartData.labels.push(newDateHour + ':' + newDateMinutes)
             } else if (this.filter.type === 'days') {
-              console.log('days')
               var dateToIso = data.data[x].to
               var dateToObj = new Date(dateToIso)
               var newDateDay = dateToObj.getDate()

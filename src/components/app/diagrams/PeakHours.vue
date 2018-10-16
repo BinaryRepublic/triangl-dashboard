@@ -15,15 +15,15 @@ export default {
     selected: {
       handler: function (val) {
         console.log(val)
-        this.requestData.from = val.startDate.toISOString()
-        this.requestData.to = val.endDate.toISOString()
+        this.requestData.from = new Date(val.startDate.getFullYear(), val.startDate.getMonth(), val.startDate.getDate() - 1).toISOString()
+        this.requestData.to = new Date(val.endDate.getFullYear(), val.endDate.getMonth(), val.endDate.getDate() - 1, 23, 59, 59).toISOString()
         this.apiRequest()
       },
       deep: true
     }
   },
   mounted () {
-    this.apiRequest();
+    this.apiRequest()
   },
   data () {
     return {
@@ -31,11 +31,11 @@ export default {
         customerId: 'c1',
         from: this.selected.startDate,
         to: this.selected.endDate
-      },
+      }
     }
   },
   methods: {
-    apiRequest() {
+    apiRequest () {
       this.$api.post('/visitors/byTimeOfDay/average', this.requestData, { headers: { 'Content-Type': 'application/json' } })
       .then((res) => {
         let data = res.data;
@@ -46,11 +46,11 @@ export default {
           var dec = parseInt((arr[1]/6)*10, 10);
 
           return parseFloat(parseInt(arr[0], 10) + '.' + (dec<10?'0':'') + dec);
-        }   
+        }
 
         for (let i in data) {
           let block = data[i];
-        
+
           const dayVal = block.day.substring(0, 3);
 
           for (let n in block.values) {
