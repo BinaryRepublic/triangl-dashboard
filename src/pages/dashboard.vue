@@ -15,6 +15,8 @@
 import Canvas from '../components/app/elements/Canvas.vue'
 import DatePicker from '../components/app/elements/DatePicker.vue'
 
+var n = new Date()
+
 export default {
   mounted () {
   },
@@ -25,8 +27,8 @@ export default {
   data () {
     return {
       selectedObj: {
-        startDate: '',
-        endDate: ''
+        startDate: new Date(n.getFullYear(), n.getMonth(), n.getDate()).toISOString(),
+        endDate: new Date(n.getFullYear(), n.getMonth(), n.getDate(), 23, 59, 59).toISOString()
       }
     }
   },

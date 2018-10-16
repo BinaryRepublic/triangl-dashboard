@@ -59,7 +59,7 @@ export default {
     last7Days () {
       const n = new Date()
       const start = new Date(n.getFullYear(), n.getMonth(), n.getDate() - 5)
-      const end = new Date(n.getFullYear(), n.getMonth(), n.getDate() + 1, 23, 59)
+      const end = new Date(n.getFullYear(), n.getMonth(), n.getDate() + 1)
       return {
         label: 'Last 7 Days',
         active: true,
@@ -72,7 +72,7 @@ export default {
     last14Days () {
       const n = new Date()
       const start = new Date(n.getFullYear(), n.getMonth(), n.getDate() - 12)
-      const end = new Date(n.getFullYear(), n.getMonth(), n.getDate() + 1, 23, 59)
+      const end = new Date(n.getFullYear(), n.getMonth(), n.getDate() + 1)
       return {
         label: 'Last 14 Days',
         active: true,
