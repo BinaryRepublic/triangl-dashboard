@@ -2,7 +2,7 @@
   <section class="module" :class="getClasses()">
     <p class="title">{{title}}</p>
     <p class="subtitle">{{mutableSubtitle}}</p>
-    <component :is="componentName" @updateSubtitle="updateSubtitle" :selected="selected"/>
+    <component :is="componentName" @updateSubtitle="updateSubtitle" :selected="selected" :selectedActive="selectedActive"/>
   </section>
 </template>
 
@@ -39,6 +39,9 @@ export default {
       type: String
     },
     selected: {
+      type: Object
+    },
+    selectedActive: {
       type: Object
     }
   },
