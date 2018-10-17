@@ -91,7 +91,6 @@ export default {
   },
   methods: {
     apiRequest () {
-      console.log(this.requestData)
       this.$api.post('visitors/count', this.requestData, {
         headers: {
           'Content-Type': 'application/json'
