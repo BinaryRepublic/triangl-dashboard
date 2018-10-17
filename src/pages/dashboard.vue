@@ -19,9 +19,6 @@ var n = new Date()
 console.log(n)
 
 export default {
-  mounted () {
-    this.test()
-  },
   components: {
     Canvas,
     DatePicker
@@ -29,7 +26,7 @@ export default {
   data () {
     return {
       selectedObj: {
-        startDate: new Date(n.getFullYear(), n.getMonth(), n.getDate()).toISOString(),
+        startDate: new Date(n.getFullYear(), n.getMonth(), n.getDate() - 6).toISOString(),
         endDate: new Date(n.getFullYear(), n.getMonth(), n.getDate(), 23, 59, 59).toISOString()
       },
       selectedObjActive: {
@@ -39,10 +36,6 @@ export default {
     }
   },
   methods: {
-    test () {
-      console.log(this.selectedObjActive.startDate)
-      console.log(this.selectedObjActive.endDate)
-    },
     selected (e) {
       this.selectedObj.startDate = e.start
       this.selectedObj.endDate = e.end

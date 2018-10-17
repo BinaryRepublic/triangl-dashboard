@@ -41,6 +41,7 @@ export default {
     }
   },
   mounted () {
+
     var dateObjFrom = new Date(this.requestData.from)
     var dateObjTo = new Date(this.requestData.to)
     var diffMilliSeconds = Math.abs(dateObjFrom - dateObjTo)
@@ -91,6 +92,7 @@ export default {
   },
   methods: {
     apiRequest () {
+      console.log(this.requestData)
       this.$api.post('visitors/count', this.requestData, {
         headers: {
           'Content-Type': 'application/json'
