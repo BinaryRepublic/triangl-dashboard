@@ -6,35 +6,81 @@ version: 2
 jobs:
   build:
     docker:
-      # specify the version you desire here
       - image: circleci/node:7.10
-      
-      # Specify service dependencies here if necessary
-      # CircleCI maintains a library of pre-built images
-      # documented at https://circleci.com/docs/2.0/circleci-images/
-      # - image: circleci/mongo:3.4.4
 
     working_directory: ~/repo
 
     steps:
       - checkout
-
-      # Download and cache dependencies
       - restore_cache:
           keys:
           - v1-dependencies-{{ checksum "package.json" }}
-          # fallback to using the latest cache if no exact match is found
           - v1-dependencies-
-
-      - run: yarn install
-
+      - run: npm install
+      - run: npm run build
       - save_cache:
           paths:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
-        
-      # run tests!
-      - run: yarn test
+      - persist_to_workspace:
+          root: .
+          paths:
+          - ./dist
+
+  push_to_gcr:
+
+    docker:
+    - image: turbinelabs/gcloud-build:0.12.4
+
+    steps:
+    - run: openrc boot
+    - attach_workspace:
+        at: .
+    - setup_remote_docker
+    - run:
+        name: create dockerfile
+        command: |
+          echo 'FROM nginx:1.15.5
+                WORKDIR /usr/share/nginx/html
+                COPY dist .' > Dockerfile
+    - run:
+        name: build from dockerfile
+        command: |
+          docker build -t eu.gcr.io/${GCLOUD_PROJECT_ID}/dashboard .
+          docker tag eu.gcr.io/${GCLOUD_PROJECT_ID}/dashboard eu.gcr.io/${GCLOUD_PROJECT_ID}/dashboard:$CIRCLE_SHA1
+    - run:
+        name: push to gcr
+        command: |
+          gcloud docker -- push eu.gcr.io/${GCLOUD_PROJECT_ID}/dashboard:$CIRCLE_SHA1
+
+  deploy_to_k8s:
+
+    docker:
+    - image: turbinelabs/gcloud-build:0.12.4
+
+    steps:
+    - run: openrc boot
+    - deploy:
+        name: deploy to kubernetes
+        command: |
+          kubectl set image deployment/dashboard dashboard=eu.gcr.io/${GCLOUD_PROJECT_ID}/dashboard:$CIRCLE_SHA1
+          kubectl rollout status deployment/dashboard
 
 
-
+workflows:
+  version: 2
+  build_and_push_to_gcr_and_deploy:
+    jobs:
+    - build
+    - push_to_gcr:
+        requires:
+        - build
+        filters:
+          branches:
+            only: master
+    - deploy_to_k8s:
+        requires:
+        - push_to_gcr
+        filters:
+          branches:
+            only: master
