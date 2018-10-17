@@ -1,7 +1,6 @@
 <template>
   <div>
     <VueRangedatePicker
-      id="datePickerGlobal"
       class="datePickerGlobal"
       @selected="(e) => { $emit('selected', e) }"
       :presetRanges="{
@@ -23,10 +22,6 @@ export default {
   components: {
     VueRangedatePicker
   },
-  mounted () {
-    let e = document.getElementById('datePickerGlobal')
-    this.$emit('selected', e)
-  },
   data () {
     return {
       language: 'EN'
@@ -34,7 +29,7 @@ export default {
   },
   methods: {
     initRange () {
-      return this.yesterday().dateRange
+      return this.last7Days().dateRange
     },
     today () {
       const n = new Date()
