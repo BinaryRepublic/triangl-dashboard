@@ -1,5 +1,7 @@
 <template>
-  <div id="container"/>
+  <div id="container">
+    <div id="heatmap"/>
+  </div>
 </template>
 
 <script>
@@ -90,8 +92,14 @@ export default {
           }
         }
 
+        let element = document.getElementById('heatmap')
+        let child = element.children[0]
+        if (child != null) {
+          element.removeChild(child)
+        }
+
         const chart = anychart.heatMap(chartData);
-        chart.container(this.$el);
+        chart.container('heatmap');
         chart.labels(false);
         chart.legend(true);
         chart.draw();
@@ -107,7 +115,7 @@ export default {
 </script>
 
 <style lang="less">
-#container{
+#heatmap{
   height: 385px;
 }
 </style>
