@@ -9,6 +9,7 @@
 import Chart from 'chart.js'
 Chart.defaults.global.defaultFontSize = 12
 Chart.defaults.global.defaultFontColor = 'rgb(170, 170, 170)'
+var myChart
 
 export default {
   name: 'CountCustomer',
@@ -128,8 +129,11 @@ export default {
         })
     },
     createChart (chartId) {
+      if (myChart) {
+        this.destroyChart(myChart)
+      }
       const ctx = document.getElementById(chartId)
-      const myChart = new Chart(ctx, {
+      myChart = new Chart(ctx, {
         type: 'line',
         data: this.chartData,
         options: {
@@ -156,6 +160,9 @@ export default {
           }
         }
       })
+    },
+    destroyChart (chart) {
+      chart.destroy()
     },
     convertMillisecondsToDays (milliseconds) {
       var days, hours, minutes, seconds;
