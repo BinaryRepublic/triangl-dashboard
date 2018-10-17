@@ -20,7 +20,7 @@
     "d3": "^5.7.0",
     "date-fns": "^1.29.0",
     "vue": "^2.5.2",
-    "vue-rangedate-picker": "^0.3.4",
+    "vue-rangedate-picker-winslow": "^1.0.5",
     "vue-resource": "^1.5.1",
     "vue-router": "^3.0.1",
     "vue2-daterange-picker": "^0.1.1",

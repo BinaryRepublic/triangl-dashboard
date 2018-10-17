@@ -44,7 +44,6 @@ export default {
       console.log(this.selectedObjActive.endDate)
     },
     selected (e) {
-      console.log(e)
       this.selectedObj.startDate = e.start
       this.selectedObj.endDate = e.end
     }

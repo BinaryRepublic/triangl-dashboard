@@ -1,6 +1,7 @@
 <template>
   <div>
     <VueRangedatePicker
+      id="datePickerGlobal"
       class="datePickerGlobal"
       @selected="(e) => { $emit('selected', e) }"
       :presetRanges="{
@@ -9,19 +10,22 @@
         last7Days: last7Days(),
         last14Days: last14Days()
       }"
+      :initRange="initRange()"
       :i18n="language"
     />
   </div>
 </template>
 
 <script>
-import VueRangedatePicker from 'vue-rangedate-picker'
+import VueRangedatePicker from 'vue-rangedate-picker-winslow'
 
 export default {
   components: {
     VueRangedatePicker
   },
   mounted () {
+    let e = document.getElementById('datePickerGlobal')
+    this.$emit('selected', e)
   },
   data () {
     return {
@@ -29,11 +33,13 @@ export default {
     }
   },
   methods: {
+    initRange () {
+      return this.yesterday().dateRange
+    },
     today () {
       const n = new Date()
       const startToday = new Date(n.getFullYear(), n.getMonth(), n.getDate() + 1, 0, 0)
       const endToday = new Date(n.getFullYear(), n.getMonth(), n.getDate() + 1, 23, 59, 59)
-      console.log(startToday)
       return {
         label: 'Today',
         active: true,
