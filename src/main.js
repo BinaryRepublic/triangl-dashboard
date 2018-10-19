@@ -6,7 +6,6 @@ import App from './App.vue'
 import router from './router'
 import VueResource from 'vue-resource'
 import axios from 'axios'
-import VueYoutube from 'vue-youtube'
 const config = require('../config')
 
 Vue.prototype.$api = axios.create({
@@ -17,7 +16,6 @@ Vue.config.devtools = true
 
 Vue.config.productionTip = false
 
-Vue.use(VueYoutube)
 Vue.use(VueResource)
 Vue.use(Vuex)
 
