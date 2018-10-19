@@ -151,7 +151,8 @@ export default {
         'x': '',
         'y': '',
         'dwellTime': ''
-      }
+      },
+      activeRects: []
     }
   },
   methods: {
@@ -168,10 +169,10 @@ export default {
           for (var x = 0; x < data.length; x++) {
             this.areas[x].dwellTime = data[x].dwellTime
           }
-          const canvas = d3.select('.canvasBox').call(d3.zoom().scaleExtent([1, 5]).on('zoom', this.zoom))
-          for (var z = 0; z < this.areas.length; z++) {
-            context.push(canvas.node().getContext('2d'))
-          }
+          // const canvas = d3.select('.canvasBox').call(d3.zoom().scaleExtent([1, 5]).on('zoom', this.zoom))
+          // for (var z = 0; z < this.areas.length; z++) {
+          //   context.push(canvas.node().getContext('2d'))
+          // }
           this.drawRect()
         })
         .catch(function (error) {
@@ -204,7 +205,16 @@ export default {
       }
     },
     drawRect () {
+      if (this.activeRects[0]) {
+        this.clearRects(this.activeRects)
+      }
       var dwellTimes = []
+      var activeRect = {
+        x: '',
+        y: '',
+        w: '',
+        h: ''
+      }
       for (var i = 0; i < this.areas.length; i++) {
         var area = this.areas[i]
         dwellTimes.push(area.dwellTime)
@@ -213,8 +223,25 @@ export default {
       for (var j in this.areas) {
         var rect = this.areas[j]
         var opacity = rect.dwellTime / maxDwellTime
+        if (!opacity) {
+          opacity = 0
+        }
         context[j].fillStyle = 'rgba(13, 158, 248, ' + opacity + ')'
         context[j].fillRect(rect.p1.x, rect.p1.y, rect.w, rect.h)
+        activeRect.x = rect.p1.x
+        activeRect.y = rect.p1.y
+        activeRect.w = rect.w
+        activeRect.h = rect.h
+        this.activeRects.push(activeRect)
+      }
+      console.log(this.activeRects)
+      console.log(this.activeRects[0])
+    },
+    clearRects (activeRects) {
+      console.log(activeRects)
+      for (var l in activeRects) {
+        var rect = activeRects[l]
+        context[l].clearRect(rect.x, rect.y, rect.w, rect.h)
       }
     }
   }
