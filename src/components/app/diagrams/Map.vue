@@ -14,12 +14,14 @@
 
 import * as d3 from 'd3'
 
-var context = []
+var nvert
+var context
 var backgroundImage
 var imageRatio = 2
 var imageSize = { width: '', height: '' }
 var difWidth
 var difHeight
+var opacities = []
 
 export default {
   props: {
@@ -29,28 +31,46 @@ export default {
   },
   mounted () {
     const canvas = d3.select('.canvasBox').call(d3.zoom().scaleExtent([1, 5]).on('zoom', this.zoom))
-    for (var z = 0; z < this.areas.length; z++) {
-      context.push(canvas.node().getContext('2d'))
-    }
-    this.createImage()
-    // context[0].globalCompositeOperation = 'destination-atop'
-    // this.drawRect()
+    // for (var z = 0; z < this.areas.length; z++) {
+    //   context.push(canvas.node().getContext('2d'))
+    // }
+    context = canvas.node().getContext('2d')
     var areasNew = this.areas
     var newHoveredArea = this.hoveredArea
+    const that = this
     canvas.on('mousemove', function () {
       var rect = this.getBoundingClientRect()
       var x = d3.event.clientX - rect.left
       var y = d3.event.clientY - rect.top
+      console.log(x, y)
+      var isArea = false
       for (var k = 0; k < areasNew.length; k++) {
-        var rectangle = areasNew[k]
-        // console.log(rectangle.p1.x, rectangle.p1.y)
-        if (x >= rectangle.p1.x && x <= rectangle.p1.x + rectangle.w && y >= rectangle.p1.y && y <= rectangle.p1.y + rectangle.h) {
-          newHoveredArea.x = rectangle.p1.x
-          newHoveredArea.y = rectangle.p1.y
-          newHoveredArea.dwellTime = rectangle.dwellTime
+        var area = areasNew[k]
+        nvert = area.points.length
+        var vertx = []
+        var verty = []
+        for (var i = 0; i < nvert; i++) {
+          vertx.push(area.points[i].x)
+          verty.push(area.points[i].y)
+        }
+        if (that.pInPoly(nvert, vertx, verty, x, y)) {
+          newHoveredArea.dwellTime = area.dwellTime
           newHoveredArea.dwellTime = Math.floor(newHoveredArea.dwellTime / 60) + ':' + ('0' + Math.floor(newHoveredArea.dwellTime % 60)).slice(-2)
+          isArea = true
         }
       }
+      if (isArea === false) {
+        newHoveredArea.dwellTime = ''
+      }
+      // for (var k = 0; k < areasNew.length; k++) {
+      //   var rectangle = areasNew[k]
+      //   if (x >= rectangle.p1.x && x <= rectangle.p1.x + rectangle.w && y >= rectangle.p1.y && y <= rectangle.p1.y + rectangle.h) {
+      //     newHoveredArea.x = rectangle.p1.x
+      //     newHoveredArea.y = rectangle.p1.y
+      //     newHoveredArea.dwellTime = rectangle.dwellTime
+      //     newHoveredArea.dwellTime = Math.floor(newHoveredArea.dwellTime / 60) + ':' + ('0' + Math.floor(newHoveredArea.dwellTime % 60)).slice(-2)
+      //   }
+      // }
     })
     this.hoveredArea.dwellTime = newHoveredArea.dwellTime
     this.apiRequest()
@@ -58,7 +78,6 @@ export default {
   watch: {
     selected: {
       handler: function (val) {
-        console.log('Map yes')
         this.requestData.from = new Date(val.startDate.getFullYear(), val.startDate.getMonth(), val.startDate.getDate() - 1).toISOString()
         this.requestData.to = new Date(val.endDate.getFullYear(), val.endDate.getMonth(), val.endDate.getDate() - 1, 23, 59, 59).toISOString()
         this.apiRequest()
@@ -119,40 +138,51 @@ export default {
       canvasHeight: 300,
       areas: [
         {
-          'p1': { 'x': 0, 'y': 149 },
-          'p2': { 'x': 203, 'y': 300 },
-          'dwellTime': '',
-          'w': 203,
-          'h': 151
+          points: [
+            { 'x': 0, 'y': 229 },
+            { 'x': 193, 'y': 151 },
+            { 'x': 202, 'y': 190 },
+            { 'x': 202, 'y': 300 },
+            { 'x': 0, 'y': 300 }
+          ],
+          'dwellTime': ''
         },
         {
-          'p1': { 'x': 203, 'y': 149 },
-          'p2': { 'x': 393, 'y': 300 },
-          'dwellTime': '',
-          'w': 190,
-          'h': 151
+          points: [
+            { 'x': 202, 'y': 188 },
+            { 'x': 277, 'y': 159 },
+            { 'x': 282, 'y': 178 },
+            { 'x': 282, 'y': 190 },
+            { 'x': 394, 'y': 190 },
+            { 'x': 394, 'y': 300 },
+            { 'x': 202, 'y': 300 }
+          ],
+          'dwellTime': ''
         },
         {
-          'p1': { 'x': 393, 'y': 190 },
-          'p2': { 'x': 600, 'y': 300 },
-          'dwellTime': '',
-          'w': 207,
-          'h': 110
+          points: [
+            { 'x': 394, 'y': 190 },
+            { 'x': 600, 'y': 190 },
+            { 'x': 600, 'y': 300 },
+            { 'x': 394, 'y': 300 }
+          ],
+          'dwellTime': ''
         },
         {
-          'p1': { 'x': 506, 'y': 0 },
-          'p2': { 'x': 600, 'y': 191 },
-          'dwellTime': '',
-          'w': 94,
-          'h': 190
+          points: [
+            { 'x': 509, 'y': 190 },
+            { 'x': 509, 'y': 31 },
+            { 'x': 600, 'y': 0 },
+            { 'x': 600, 'y': 190 }
+          ],
+          'dwellTime': ''
         }
       ],
       hoveredArea: {
         'x': '',
         'y': '',
         'dwellTime': ''
-      },
-      activeRects: []
+      }
     }
   },
   methods: {
@@ -174,6 +204,7 @@ export default {
           //   context.push(canvas.node().getContext('2d'))
           // }
           this.drawRect()
+          this.createImage()
         })
         .catch(function (error) {
           console.log(error)
@@ -201,20 +232,14 @@ export default {
       backgroundImage = new Image()
       backgroundImage.src = '../static/campus.svg'
       backgroundImage.onload = () => {
-        context[0].drawImage(backgroundImage, difWidth, difHeight, imageSize.width, imageSize.height)
+        context.drawImage(backgroundImage, difWidth, difHeight, imageSize.width, imageSize.height)
       }
     },
     drawRect () {
-      if (this.activeRects[0]) {
-        this.clearRects(this.activeRects)
+      for (var k in opacities) {
+        opacities[k] = 0
       }
       var dwellTimes = []
-      var activeRect = {
-        x: '',
-        y: '',
-        w: '',
-        h: ''
-      }
       for (var i = 0; i < this.areas.length; i++) {
         var area = this.areas[i]
         dwellTimes.push(area.dwellTime)
@@ -222,27 +247,34 @@ export default {
       var maxDwellTime = Math.max(...dwellTimes)
       for (var j in this.areas) {
         var rect = this.areas[j]
-        var opacity = rect.dwellTime / maxDwellTime
-        if (!opacity) {
-          opacity = 0
+        opacities[j] = rect.dwellTime / maxDwellTime
+        if (!opacities[j]) {
+          opacities[j] = 0
         }
-        context[j].fillStyle = 'rgba(13, 158, 248, ' + opacity + ')'
-        context[j].fillRect(rect.p1.x, rect.p1.y, rect.w, rect.h)
-        activeRect.x = rect.p1.x
-        activeRect.y = rect.p1.y
-        activeRect.w = rect.w
-        activeRect.h = rect.h
-        this.activeRects.push(activeRect)
+        if (opacities[j] === 0) {
+          context.fillStyle = 'rgb(255, 255, 255)'
+        } else {
+          context.fillStyle = 'rgba(13, 158, 248, ' + opacities[j] + ')'
+        }
+        context.beginPath()
+        context.moveTo(rect.points[0].x, rect.points[0].y)
+        for (var q = 1; q < rect.points.length; q++) {
+          context.lineTo(rect.points[q].x, rect.points[q].y)
+        }
+        context.fill()
       }
-      console.log(this.activeRects)
-      console.log(this.activeRects[0])
     },
-    clearRects (activeRects) {
-      console.log(activeRects)
-      for (var l in activeRects) {
-        var rect = activeRects[l]
-        context[l].clearRect(rect.x, rect.y, rect.w, rect.h)
+    pInPoly (nvert, vertx, verty, testx, testy) {
+      var i
+      var j
+      var c = false
+      for (i = 0, j = nvert - 1; i < nvert; j = i++) {
+        if (((verty[i] > testy) !== (verty[j] > testy)) &&
+          (testx < (vertx[j] - vertx[i]) * (testy - verty[i]) / (verty[j] - verty[i]) + vertx[i])) {
+          c = !c
+        }
       }
+      return c
     }
   }
 }
@@ -256,6 +288,6 @@ export default {
   }
   .sideBar{
     float: left;
-    margin-left: 50px;
+    margin-top: 10px;
   }
 </style>
