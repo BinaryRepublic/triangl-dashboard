@@ -4,7 +4,6 @@
       <canvas class="canvasBox" :width="canvasWidth" :height="canvasHeight"></canvas>
     </div>
     <div class="sideBar">
-      <p>Area: ({{ hoveredArea.x }}/{{ hoveredArea.y }})</p>
       <p>Average Dwelltime: {{ hoveredArea.dwellTime }}</p>
     </div>
   </div>
@@ -17,7 +16,7 @@ import * as d3 from 'd3'
 var nvert
 var context
 var backgroundImage
-var imageRatio = 2
+var imageRatio = 2.39
 var imageSize = { width: '', height: '' }
 var difWidth
 var difHeight
@@ -31,9 +30,6 @@ export default {
   },
   mounted () {
     const canvas = d3.select('.canvasBox').call(d3.zoom().scaleExtent([1, 5]).on('zoom', this.zoom))
-    // for (var z = 0; z < this.areas.length; z++) {
-    //   context.push(canvas.node().getContext('2d'))
-    // }
     context = canvas.node().getContext('2d')
     var areasNew = this.areas
     var newHoveredArea = this.hoveredArea
@@ -62,15 +58,6 @@ export default {
       if (isArea === false) {
         newHoveredArea.dwellTime = ''
       }
-      // for (var k = 0; k < areasNew.length; k++) {
-      //   var rectangle = areasNew[k]
-      //   if (x >= rectangle.p1.x && x <= rectangle.p1.x + rectangle.w && y >= rectangle.p1.y && y <= rectangle.p1.y + rectangle.h) {
-      //     newHoveredArea.x = rectangle.p1.x
-      //     newHoveredArea.y = rectangle.p1.y
-      //     newHoveredArea.dwellTime = rectangle.dwellTime
-      //     newHoveredArea.dwellTime = Math.floor(newHoveredArea.dwellTime / 60) + ':' + ('0' + Math.floor(newHoveredArea.dwellTime % 60)).slice(-2)
-      //   }
-      // }
     })
     this.hoveredArea.dwellTime = newHoveredArea.dwellTime
     this.apiRequest()
@@ -134,53 +121,51 @@ export default {
           }
         ]
       },
-      canvasWidth: 600,
-      canvasHeight: 300,
+      canvasWidth: 632,
+      canvasHeight: 316,
       areas: [
         {
           points: [
-            { 'x': 0, 'y': 229 },
-            { 'x': 193, 'y': 151 },
-            { 'x': 202, 'y': 190 },
-            { 'x': 202, 'y': 300 },
-            { 'x': 0, 'y': 300 }
+            { 'x': 0, 'y': 228 },
+            { 'x': 124, 'y': 186 },
+            { 'x': 124, 'y': 291 },
+            { 'x': 0, 'y': 291 }
           ],
           'dwellTime': ''
         },
         {
           points: [
-            { 'x': 202, 'y': 188 },
-            { 'x': 277, 'y': 159 },
-            { 'x': 282, 'y': 178 },
-            { 'x': 282, 'y': 190 },
-            { 'x': 394, 'y': 190 },
-            { 'x': 394, 'y': 300 },
-            { 'x': 202, 'y': 300 }
+            { 'x': 124, 'y': 186 },
+            { 'x': 205, 'y': 160 },
+            { 'x': 214, 'y': 193 },
+            { 'x': 214, 'y': 291 },
+            { 'x': 124, 'y': 291 }
           ],
           'dwellTime': ''
         },
         {
           points: [
-            { 'x': 394, 'y': 190 },
-            { 'x': 600, 'y': 190 },
-            { 'x': 600, 'y': 300 },
-            { 'x': 394, 'y': 300 }
+            { 'x': 214, 'y': 192 },
+            { 'x': 292, 'y': 166 },
+            { 'x': 298, 'y': 183 },
+            { 'x': 298, 'y': 194 },
+            { 'x': 536, 'y': 194 },
+            { 'x': 536, 'y': 291 },
+            { 'x': 214, 'y': 291 }
           ],
           'dwellTime': ''
         },
         {
           points: [
-            { 'x': 509, 'y': 190 },
-            { 'x': 509, 'y': 31 },
-            { 'x': 600, 'y': 0 },
-            { 'x': 600, 'y': 190 }
+            { 'x': 536, 'y': 291 },
+            { 'x': 630, 'y': 291 },
+            { 'x': 630, 'y': 27 },
+            { 'x': 536, 'y': 53 }
           ],
           'dwellTime': ''
         }
       ],
       hoveredArea: {
-        'x': '',
-        'y': '',
         'dwellTime': ''
       }
     }
@@ -199,10 +184,6 @@ export default {
           for (var x = 0; x < data.length; x++) {
             this.areas[x].dwellTime = data[x].dwellTime
           }
-          // const canvas = d3.select('.canvasBox').call(d3.zoom().scaleExtent([1, 5]).on('zoom', this.zoom))
-          // for (var z = 0; z < this.areas.length; z++) {
-          //   context.push(canvas.node().getContext('2d'))
-          // }
           this.drawRect()
           this.createImage()
         })
@@ -264,13 +245,12 @@ export default {
         context.fill()
       }
     },
-    pInPoly (nvert, vertx, verty, testx, testy) {
-      var i
-      var j
+    pInPoly (nPoints, arrayX, arrayY, pointX, pointY) {
+      var i, j
       var c = false
-      for (i = 0, j = nvert - 1; i < nvert; j = i++) {
-        if (((verty[i] > testy) !== (verty[j] > testy)) &&
-          (testx < (vertx[j] - vertx[i]) * (testy - verty[i]) / (verty[j] - verty[i]) + vertx[i])) {
+      for (i = 0, j = nPoints - 1; i < nPoints; j = i++) {
+        if (((arrayY[i] > pointY) !== (arrayY[j] > pointY)) &&
+          (pointX < (arrayX[j] - arrayX[i]) * (pointY - arrayY[i]) / (arrayY[j] - arrayY[i]) + arrayX[i])) {
           c = !c
         }
       }
@@ -282,9 +262,6 @@ export default {
 <style lang="less">
   .canvasWrapper{
     float: left;
-    .canvasBox{
-      border: 1px solid black;
-    }
   }
   .sideBar{
     float: left;
