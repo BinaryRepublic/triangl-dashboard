@@ -21,9 +21,9 @@ export default {
 .container {
   float: left;
   position: relative;
-  width: 1200px;
+  width: 1020px;
   left: 50%;
-  margin-left: -600px;
+  margin-left: -510px;
   @media (max-width: 1200px){
     width: 100%;
     left: 0;
@@ -35,7 +35,7 @@ export default {
     position: relative;
     width: 1040px;
     left: 50%;
-    margin-left: -500px;
+    margin-left: -520px;
     margin-top: 40px;
     height: 100vh;
   }

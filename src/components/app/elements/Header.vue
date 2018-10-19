@@ -44,10 +44,8 @@ header {
   width: 100%;
   height: 50px;
   background-color: rgb(250, 250, 250);
-
   .header-title {
     margin-top: 10.5px;
-    margin-left: 10.5px;
   }
 }
 </style>
