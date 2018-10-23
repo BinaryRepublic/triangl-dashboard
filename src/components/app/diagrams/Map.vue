@@ -13,7 +13,6 @@
 
 import * as d3 from 'd3'
 
-var nvert
 var context
 var backgroundImage
 var imageRatio = 2.39
@@ -21,6 +20,7 @@ var imageSize = { width: '', height: '' }
 var difWidth
 var difHeight
 var opacities = []
+var amountVertices
 
 export default {
   props: {
@@ -31,8 +31,6 @@ export default {
   mounted () {
     const canvas = d3.select('.canvasBox').call(d3.zoom().scaleExtent([1, 5]).on('zoom', this.zoom))
     context = canvas.node().getContext('2d')
-    var areasNew = this.areas
-    var newHoveredArea = this.hoveredArea
     const that = this
     canvas.on('mousemove', function () {
       var rect = this.getBoundingClientRect()
@@ -40,26 +38,26 @@ export default {
       var y = d3.event.clientY - rect.top
       console.log(x, y)
       var isArea = false
-      for (var k = 0; k < areasNew.length; k++) {
-        var area = areasNew[k]
-        nvert = area.points.length
-        var vertx = []
-        var verty = []
-        for (var i = 0; i < nvert; i++) {
-          vertx.push(area.points[i].x)
-          verty.push(area.points[i].y)
+      for (var k = 0; k < that.areas.length; k++) {
+        var area = that.areas[k]
+        amountVertices = area.points.length
+        var arrayValuesX = []
+        var arrayValuesY = []
+        for (var i = 0; i < amountVertices; i++) {
+          arrayValuesX.push(area.points[i].x)
+          arrayValuesY.push(area.points[i].y)
         }
-        if (that.pInPoly(nvert, vertx, verty, x, y)) {
-          newHoveredArea.dwellTime = area.dwellTime
-          newHoveredArea.dwellTime = Math.floor(newHoveredArea.dwellTime / 60) + ':' + ('0' + Math.floor(newHoveredArea.dwellTime % 60)).slice(-2)
+        if (that.pInPoly(amountVertices, arrayValuesX, arrayValuesY, x, y)) {
+          that.hoveredArea.dwellTime = area.dwellTime
+          that.hoveredArea.dwellTime = Math.floor(that.hoveredArea.dwellTime / 60) + ':' + ('0' + Math.floor(that.hoveredArea.dwellTime % 60)).slice(-2)
           isArea = true
         }
       }
       if (isArea === false) {
-        newHoveredArea.dwellTime = ''
+        that.hoveredArea.dwellTime = ''
       }
     })
-    this.hoveredArea.dwellTime = newHoveredArea.dwellTime
+    this.hoveredArea.dwellTime = that.hoveredArea.dwellTime
     this.apiRequest()
   },
   watch: {
@@ -74,6 +72,8 @@ export default {
   },
   data () {
     return {
+      canvasWidth: 632,
+      canvasHeight: 316,
       requestData: {
         'mapId': '3f18f9da-93d1-4319-95bd-702d24f48708',
         'from': this.selected.startDate,
@@ -121,8 +121,6 @@ export default {
           }
         ]
       },
-      canvasWidth: 632,
-      canvasHeight: 316,
       areas: [
         {
           points: [
@@ -172,7 +170,6 @@ export default {
   },
   methods: {
     apiRequest () {
-      console.log(this.requestData)
       this.$api.post('visitors/areas/duration', this.requestData, {
         headers: {
           'Content-Type': 'application/json'
@@ -180,7 +177,6 @@ export default {
       })
         .then((response) => {
           const data = response.data
-          console.log(data)
           for (var x = 0; x < data.length; x++) {
             this.areas[x].dwellTime = data[x].dwellTime
           }
@@ -245,12 +241,12 @@ export default {
         context.fill()
       }
     },
-    pInPoly (nPoints, arrayX, arrayY, pointX, pointY) {
+    pInPoly (nPoints, arrayValuesX, arrayValuesY, pointX, pointY) {
       var i, j
       var c = false
       for (i = 0, j = nPoints - 1; i < nPoints; j = i++) {
-        if (((arrayY[i] > pointY) !== (arrayY[j] > pointY)) &&
-          (pointX < (arrayX[j] - arrayX[i]) * (pointY - arrayY[i]) / (arrayY[j] - arrayY[i]) + arrayX[i])) {
+        if (((arrayValuesY[i] > pointY) !== (arrayValuesY[j] > pointY)) &&
+          (pointX < (arrayValuesX[j] - arrayValuesX[i]) * (pointY - arrayValuesY[i]) / (arrayValuesY[j] - arrayValuesY[i]) + arrayValuesX[i])) {
           c = !c
         }
       }

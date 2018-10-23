@@ -40,7 +40,6 @@ export default {
       this.$api.post('/visitors/byTimeOfDay/average', this.requestData, { headers: { 'Content-Type': 'application/json' } })
       .then((res) => {
         let data = res.data;
-        console.log(data)
         var chartData = [];
 
         function timeToDecimal(t) {
