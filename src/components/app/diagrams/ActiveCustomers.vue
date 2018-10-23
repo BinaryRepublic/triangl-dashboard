@@ -25,11 +25,10 @@ export default {
   },
   methods: {
     apiRequest () {
-      console.log(this.requestData)
       this.$api.post('visitors/count', this.requestData)
         .then((res) => {
-          const total = res.data.total
-          this.$emit('updateSubtitle', total)
+          const totalCustomers = res.data.total
+          this.$emit('updateSubtitle', totalCustomers)
         })
     }
   }

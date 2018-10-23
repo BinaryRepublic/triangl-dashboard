@@ -1,4 +1,3 @@
-<!--suppress ALL -->
 <template>
   <section class="lineGraph">
     <canvas id="countCustomersGraph"></canvas>
@@ -9,7 +8,7 @@
 import Chart from 'chart.js'
 Chart.defaults.global.defaultFontSize = 12
 Chart.defaults.global.defaultFontColor = 'rgb(170, 170, 170)'
-var myChart
+var myChart, dateObjFrom, dateObjTo, diffMilliSeconds, diffDays
 
 export default {
   name: 'CountCustomer',
@@ -21,40 +20,28 @@ export default {
   watch: {
     selected: {
       handler: function (val) {
-        this.requestData.from = new Date (val.startDate.getFullYear(), val.startDate.getMonth(), val.startDate.getDate() -1).toISOString()
-        this.requestData.to = new Date (val.endDate.getFullYear(), val.endDate.getMonth(), val.endDate.getDate() -1, 23, 59, 59).toISOString()
+        this.requestData.from = new Date(val.startDate.getFullYear(), val.startDate.getMonth(), val.startDate.getDate() - 1).toISOString()
+        this.requestData.to = new Date(val.endDate.getFullYear(), val.endDate.getMonth(), val.endDate.getDate() - 1, 23, 59, 59).toISOString()
 
-        var dateObjFrom = new Date(this.requestData.from)
-        var dateObjTo = new Date(this.requestData.to)
-        var diffMilliSeconds = Math.abs(dateObjFrom - dateObjTo)
-        var diffDays = this.convertMillisecondsToDays(diffMilliSeconds)
+        dateObjFrom = new Date(this.requestData.from)
+        dateObjTo = new Date(this.requestData.to)
+        diffMilliSeconds = Math.abs(dateObjFrom - dateObjTo)
+        diffDays = this.convertMillisecondsToDays(diffMilliSeconds)
 
-        if (diffDays.days <= 1) {
-          this.requestData.dataPointCount = 24
-          this.filter.type = 'hours'
-        } else if (diffDays.days > 1) {
-          this.requestData.dataPointCount = diffDays.days
-          this.filter.type = 'days'
-        }
+        this.setDataPointCount(diffDays.days)
+        this.setFilterType(diffDays.days)
         this.apiRequest()
       },
       deep: true
     }
   },
   mounted () {
-
-    var dateObjFrom = new Date(this.requestData.from)
-    var dateObjTo = new Date(this.requestData.to)
-    var diffMilliSeconds = Math.abs(dateObjFrom - dateObjTo)
-    var diffDays = this.convertMillisecondsToDays(diffMilliSeconds)
-
-    if (diffDays.days <= 1) {
-      this.requestData.dataPointCount = 24
-      this.filter.type = 'hours'
-    } else if (diffDays.days > 1) {
-      this.requestData.dataPointCount = diffDays.days
-      this.filter.type = 'days'
-    }
+    dateObjFrom = new Date(this.requestData.from)
+    dateObjTo = new Date(this.requestData.to)
+    diffMilliSeconds = Math.abs(dateObjFrom - dateObjTo)
+    diffDays = this.convertMillisecondsToDays(diffMilliSeconds)
+    this.setDataPointCount(diffDays.days)
+    this.setFilterType(diffDays.days)
     this.apiRequest()
   },
   data () {
@@ -63,13 +50,9 @@ export default {
         customerId: 'c1',
         from: this.selected.startDate,
         to: this.selected.endDate,
-        // from: '2018-09-20T13:49:09.404141Z',
-        // to: '2018-09-30T13:49:09.404141Z',
         dataPointCount: 10
       },
-      filter: {
-        type: ''
-      },
+      filterType: '',
       chartData: {
         labels: [],
         datasets: [
@@ -93,7 +76,6 @@ export default {
   },
   methods: {
     apiRequest () {
-      console.log(this.requestData)
       this.$api.post('visitors/count', this.requestData, {
         headers: {
           'Content-Type': 'application/json'
@@ -103,25 +85,29 @@ export default {
           this.chartData.labels = []
           this.chartData.datasets[0].data = []
           const data = response.data
-          console.log(data)
-          const total = data.total
+          const totalCustomers = data.total
+          var dateToIso, dateToObj, newDateDayMonth, newDateHour
           for (var x = 0; x < data.data.length; x++) {
             this.chartData.datasets[0].data.push(data.data[x].count)
-            if (this.filter.type === 'hours') {
-              var dateToIso = data.data[x].to
-              var dateToObj = new Date(dateToIso)
-              var newDateHour = dateToObj.getHours()
-              var newDateMinutes = dateToObj.getMinutes()
-              this.chartData.labels.push(newDateHour + ':' + newDateMinutes)
-            } else if (this.filter.type === 'days') {
-              var dateToIso = data.data[x].to
-              var dateToObj = new Date(dateToIso)
-              var newDateDay = dateToObj.getDate()
-              var newDateMonth = dateToObj.getMonth() + 1
-              this.chartData.labels.push(newDateDay + '.' + newDateMonth)
+            if (this.filterType === 'hours') {
+              dateToIso = data.data[x].to
+              console.log(dateToIso)
+              dateToObj = new Date(dateToIso)
+              newDateHour = dateToObj.getHours() + 1
+              if (newDateHour.toString().length === 1) {
+                newDateHour = '0' + newDateHour
+              }
+              console.log(newDateHour)
+              this.chartData.labels.push(newDateHour + ':00')
+              console.log(this.chartData.labels)
+            } else if (this.filterType === 'days') {
+              dateToIso = data.data[x].to
+              dateToObj = new Date(dateToIso)
+              newDateDayMonth = ('0' + dateToObj.getDate()).slice(-2) + '.' + (('0' + (dateToObj.getMonth() + 1)).slice(-2))
+              this.chartData.labels.push(newDateDayMonth)
             }
           }
-          this.$emit('updateSubtitle', total)
+          this.$emit('updateSubtitle', totalCustomers)
           this.createChart('countCustomersGraph')
         })
         .catch(function (error) {
@@ -165,13 +151,27 @@ export default {
       chart.destroy()
     },
     convertMillisecondsToDays (milliseconds) {
-      var days, hours, minutes, seconds;
-      seconds = Math.floor(milliseconds / 1000);
-      minutes = Math.floor(seconds / 60);
-      hours = Math.floor(minutes / 60);
+      var days, hours, minutes, seconds
+      seconds = Math.floor(milliseconds / 1000)
+      minutes = Math.floor(seconds / 60)
+      hours = Math.floor(minutes / 60)
       days = Math.floor(hours / 24) + 1
       return {
         days
+      }
+    },
+    setDataPointCount (days) {
+      if (days <= 1) {
+        this.requestData.dataPointCount = 24
+      } else if (days > 1) {
+        this.requestData.dataPointCount = days
+      }
+    },
+    setFilterType (days) {
+      if (days <= 1) {
+        this.filterType = 'hours'
+      } else if (days > 1) {
+        this.filterType = 'days'
       }
     }
   }
