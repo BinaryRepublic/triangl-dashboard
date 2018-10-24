@@ -115,6 +115,6 @@ export default {
 
 <style lang="less">
 #heatmap{
-  height: 385px;
+  height: 355px;
 }
 </style>
