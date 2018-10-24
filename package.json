@@ -19,13 +19,16 @@
     "chart.js": "^2.7.2",
     "d3": "^5.7.0",
     "date-fns": "^1.29.0",
+    "json2csv": "^4.2.1",
     "vue": "^2.5.2",
+    "vue-material": "^1.0.0-beta-10.2",
     "vue-rangedate-picker-winslow": "^1.0.5",
     "vue-resource": "^1.5.1",
     "vue-router": "^3.0.1",
     "vue2-daterange-picker": "^0.1.1",
     "vuetify": "^1.2.9",
-    "vuetify-daterange-picker": "^2.5.0"
+    "vuetify-daterange-picker": "^2.5.0",
+    "vuex": "^3.0.1"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.2",

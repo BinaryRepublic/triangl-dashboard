@@ -1,6 +1,7 @@
 <template>
   <section class="lineGraph">
     <canvas id="countCustomersGraph"></canvas>
+    <md-button v-on:click="exportCsv" class="md-primary">Export</md-button>
   </section>
 </template>
 
@@ -9,6 +10,7 @@ import Chart from 'chart.js'
 Chart.defaults.global.defaultFontSize = 12
 Chart.defaults.global.defaultFontColor = 'rgb(170, 170, 170)'
 var myChart, dateObjFrom, dateObjTo, diffMilliSeconds, diffDays
+const Json2csvParser = require('json2csv').Parser;
 
 export default {
   name: 'CountCustomer',
@@ -75,6 +77,34 @@ export default {
     }
   },
   methods: {
+    download(filename, text) {
+      var element = document.createElement('a');
+      element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+      element.setAttribute('download', filename);
+
+      element.style.display = 'none';
+      document.body.appendChild(element);
+
+      element.click();
+
+      document.body.removeChild(element);
+    },
+    exportCsv () {
+      this.$api.post('visitors/count', this.requestData, {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+      .then((response) => {
+        let data = response.data;
+        const fields = ['from', 'to', 'count'];
+        const opts = { fields };
+
+        const parser = new Json2csvParser(opts);
+        const csv = parser.parse(data.data);
+        this.download('export.csv', csv)
+      })
+    },
     apiRequest () {
       this.$api.post('visitors/count', this.requestData, {
         headers: {
@@ -181,5 +211,10 @@ export default {
 #countCustomersGraph{
   position: relative;
   left: -5px;
+}
+.md-primary{
+  float: right;
+  margin-right: -20px;
+  margin-top: 3px;
 }
 </style>
