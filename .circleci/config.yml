@@ -26,6 +26,7 @@ jobs:
           root: .
           paths:
           - ./dist
+          - ./nginx.default.conf
 
   push_to_gcr:
 
@@ -43,7 +44,7 @@ jobs:
           echo 'FROM nginx:1.15.5
                 WORKDIR /usr/share/nginx/html
                 RUN echo "majd:4xmkBDMzjjOfE" > /etc/nginx/.htpasswd
-                COPY default.conf /etc/nginx/conf.d/default.conf
+                COPY nginx.default.conf /etc/nginx/conf.d/default.conf
                 COPY dist .' > Dockerfile
     - run:
         name: build from dockerfile
