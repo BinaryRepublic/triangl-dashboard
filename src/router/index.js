@@ -3,7 +3,6 @@ import Router from 'vue-router'
 import LayoutLanding from '../layouts/landing.vue'
 import LayoutApp from '../layouts/app.vue'
 import Dashboard from '../pages/dashboard.vue'
-import Login from '../pages/login.vue'
 
 // import Canvas from '../pages/canvas.vue'
 
@@ -18,19 +17,8 @@ export default new Router({
     //   children: []
     // },
     {
-      path: '/',
-      redirect: {
-        name: 'Login'
-      }
-    },
-    {
-      path: '/login',
-      name: 'login',
-      component: Login
-    },
-    {
       // path: '/app',
-      path: '/app',
+      path: '/',
       name: 'LayoutApp',
       component: LayoutApp,
       children: [
