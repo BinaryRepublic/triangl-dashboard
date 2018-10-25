@@ -33,5 +33,4 @@ describe('DataController.js', () => {
         expect(data).toEqual({data: { datasets: [ { data: [36, 0, 0, 0, 65, 0, 0] } ], labels: [] }, total: 42})
       })
   })
-
 })
