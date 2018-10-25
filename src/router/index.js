@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import LayoutLanding from '../layouts/landing.vue'
 import LayoutApp from '../layouts/app.vue'
 import Dashboard from '../pages/dashboard.vue'
+import Debug from '../pages/debug.vue'
 
 // import Canvas from '../pages/canvas.vue'
 
@@ -26,6 +27,11 @@ export default new Router({
           path: '',
           name: 'Dashboard',
           component: Dashboard
+        },
+        {
+          path: '/debug',
+          name: 'Debug',
+          component: Debug
         }
       ]
     }
