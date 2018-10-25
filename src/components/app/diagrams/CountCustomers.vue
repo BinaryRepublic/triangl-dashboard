@@ -33,7 +33,7 @@ export default {
 
         this.setDataPointCount(diffDays.days)
         this.setFilterType(diffDays.days)
-        this.apiRequest()
+        this.loadData()
       },
       deep: true
     }
