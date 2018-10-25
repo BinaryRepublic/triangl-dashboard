@@ -98,6 +98,7 @@ export default class DataController {
               chartData.labels.push(newDateDayMonth)
             }
           }
+
           resolve({ total: totalCustomers, data: chartData })
         })
         .catch(error => reject(error))
