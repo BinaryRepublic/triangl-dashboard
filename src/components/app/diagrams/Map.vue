@@ -12,6 +12,7 @@
 <script>
 
 import * as d3 from 'd3'
+import DataController from '../../../controllers/DataController'
 
 var context
 var backgroundImage
@@ -27,6 +28,9 @@ export default {
     selected: {
       type: Object
     }
+  },
+  beforeMount () {
+    this.controller = new DataController(this.$api)
   },
   mounted () {
     const canvas = d3.select('.canvasBox').call(d3.zoom().scaleExtent([1, 5]).on('zoom', this.zoom))
@@ -58,14 +62,14 @@ export default {
       }
     })
     this.hoveredArea.dwellTime = that.hoveredArea.dwellTime
-    this.apiRequest()
+    this.loadData()
   },
   watch: {
     selected: {
       handler: function (val) {
         this.requestData.from = new Date(val.startDate.getFullYear(), val.startDate.getMonth(), val.startDate.getDate() - 1).toISOString()
         this.requestData.to = new Date(val.endDate.getFullYear(), val.endDate.getMonth(), val.endDate.getDate() - 1, 23, 59, 59).toISOString()
-        this.apiRequest()
+        this.loadData()
       },
       deep: true
     }
@@ -169,23 +173,13 @@ export default {
     }
   },
   methods: {
-    apiRequest () {
-      this.$api.post('visitors/areas/duration', this.requestData, {
-        headers: {
-          'Content-Type': 'application/json'
-        }
+    loadData () {
+      this.controller.getMapData(this.requestData, this.areas)
+      .then(data => {
+        this.areas = data
+        this.drawRect()
+        this.createImage()
       })
-        .then((response) => {
-          const data = response.data
-          for (var x = 0; x < data.length; x++) {
-            this.areas[x].dwellTime = data[x].dwellTime
-          }
-          this.drawRect()
-          this.createImage()
-        })
-        .catch(function (error) {
-          console.log(error)
-        })
     },
     createImage () {
       var canvasRatio = this.canvasWidth / this.canvasHeight

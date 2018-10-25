@@ -4,6 +4,8 @@
 </template>
 
 <script>
+import DataController from '../../../controllers/DataController'
+
 export default {
   props: {
     selectedActive: {
@@ -20,17 +22,12 @@ export default {
       }
     }
   },
-  mounted () {
-    this.apiRequest()
+  beforeMount () {
+    this.controller = new DataController(this.$api)
   },
-  methods: {
-    apiRequest () {
-      this.$api.post('visitors/count', this.requestData)
-        .then((res) => {
-          const totalCustomers = res.data.total
-          this.$emit('updateSubtitle', totalCustomers)
-        })
-    }
+  mounted () {
+    this.controller.getActiveCustomersData(this.requestData)
+    .then(total => this.$emit('updateSubtitle', total))
   }
 }
 </script>
