@@ -7,6 +7,7 @@
 
 <script>
 import Chart from 'chart.js'
+import DataController from '../../../controllers/DataController'
 Chart.defaults.global.defaultFontSize = 12
 Chart.defaults.global.defaultFontColor = 'rgb(170, 170, 170)'
 var myChart, dateObjFrom, dateObjTo, diffMilliSeconds, diffDays
@@ -37,6 +38,9 @@ export default {
       deep: true
     }
   },
+  beforeMount () {
+    this.controller = new DataController(this.$api)
+  },
   mounted () {
     dateObjFrom = new Date(this.requestData.from)
     dateObjTo = new Date(this.requestData.to)
@@ -44,7 +48,7 @@ export default {
     diffDays = this.convertMillisecondsToDays(diffMilliSeconds)
     this.setDataPointCount(diffDays.days)
     this.setFilterType(diffDays.days)
-    this.apiRequest()
+    this.loadData()
   },
   data () {
     return {
@@ -105,44 +109,13 @@ export default {
         this.download('export.csv', csv)
       })
     },
-    apiRequest () {
-      this.$api.post('visitors/count', this.requestData, {
-        headers: {
-          'Content-Type': 'application/json'
-        }
+    loadData () {
+      this.controller.getCountCustomersData(this.requestData, this.chartData, this.filterType)
+      .then(res => {
+        this.chartData = res.data
+        this.$emit('updateSubtitle', res.total)
+        this.createChart('countCustomersGraph')
       })
-        .then((response) => {
-          this.chartData.labels = []
-          this.chartData.datasets[0].data = []
-          const data = response.data
-          const totalCustomers = data.total
-          var dateToIso, dateToObj, newDateDayMonth, newDateHour
-          for (var x = 0; x < data.data.length; x++) {
-            this.chartData.datasets[0].data.push(data.data[x].count)
-            if (this.filterType === 'hours') {
-              dateToIso = data.data[x].to
-              console.log(dateToIso)
-              dateToObj = new Date(dateToIso)
-              newDateHour = dateToObj.getHours() + 1
-              if (newDateHour.toString().length === 1) {
-                newDateHour = '0' + newDateHour
-              }
-              console.log(newDateHour)
-              this.chartData.labels.push(newDateHour + ':00')
-              console.log(this.chartData.labels)
-            } else if (this.filterType === 'days') {
-              dateToIso = data.data[x].to
-              dateToObj = new Date(dateToIso)
-              newDateDayMonth = ('0' + dateToObj.getDate()).slice(-2) + '.' + (('0' + (dateToObj.getMonth() + 1)).slice(-2))
-              this.chartData.labels.push(newDateDayMonth)
-            }
-          }
-          this.$emit('updateSubtitle', totalCustomers)
-          this.createChart('countCustomersGraph')
-        })
-        .catch(function (error) {
-          console.log(error)
-        })
     },
     createChart (chartId) {
       if (myChart) {
