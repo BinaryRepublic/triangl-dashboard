@@ -27,7 +27,7 @@ export default {
   },
   mounted () {
     this.controller.getActiveCustomersData(this.requestData)
-    .then(total => this.$emit('updateSubtitle', total))
+      .then(total => this.$emit('updateSubtitle', total.toString()))
   }
 }
 </script>
