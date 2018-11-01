@@ -6,12 +6,12 @@
 </template>
 
 <script>
-import Chart from 'chart.js'
+import Chart from '../../../../node_modules/chart.js/src/chart'
 import DataController from '../../../controllers/DataController'
 Chart.defaults.global.defaultFontSize = 12
 Chart.defaults.global.defaultFontColor = 'rgb(170, 170, 170)'
 var myChart, dateObjFrom, dateObjTo, diffMilliSeconds, diffDays
-const Json2csvParser = require('json2csv').Parser;
+const Json2csvParser = require('json2csv').Parser
 
 export default {
   name: 'CountCustomer',
@@ -23,8 +23,12 @@ export default {
   watch: {
     selected: {
       handler: function (val) {
+        console.log(this.requestData.from)
+        console.log(this.requestData.to)
         this.requestData.from = new Date(val.startDate.getFullYear(), val.startDate.getMonth(), val.startDate.getDate() - 1).toISOString()
-        this.requestData.to = new Date(val.endDate.getFullYear(), val.endDate.getMonth(), val.endDate.getDate() - 1, 23, 59, 59).toISOString()
+        this.requestData.to = new Date(val.endDate.getFullYear(), val.endDate.getMonth(), val.endDate.getDate() - 1, 22, 59, 59).toISOString()
+        console.log(this.requestData.from)
+        console.log(this.requestData.to)
 
         dateObjFrom = new Date(this.requestData.from)
         dateObjTo = new Date(this.requestData.to)
@@ -81,17 +85,17 @@ export default {
     }
   },
   methods: {
-    download(filename, text) {
-      var element = document.createElement('a');
-      element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
-      element.setAttribute('download', filename);
+    download (filename, text) {
+      var element = document.createElement('a')
+      element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text))
+      element.setAttribute('download', filename)
 
-      element.style.display = 'none';
-      document.body.appendChild(element);
+      element.style.display = 'none'
+      document.body.appendChild(element)
 
-      element.click();
+      element.click()
 
-      document.body.removeChild(element);
+      document.body.removeChild(element)
     },
     exportCsv () {
       this.$api.post('visitors/count', this.requestData, {
@@ -99,23 +103,24 @@ export default {
           'Content-Type': 'application/json'
         }
       })
-      .then((response) => {
-        let data = response.data;
-        const fields = ['from', 'to', 'count'];
-        const opts = { fields };
+        .then((response) => {
+          let data = response.data
+          const fields = ['from', 'to', 'count']
+          const opts = { fields }
 
-        const parser = new Json2csvParser(opts);
-        const csv = parser.parse(data.data);
-        this.download('export.csv', csv)
-      })
+          const parser = new Json2csvParser(opts)
+          const csv = parser.parse(data.data)
+          this.download('export.csv', csv)
+        })
     },
     loadData () {
+      console.log(this.requestData)
       this.controller.getCountCustomersData(this.requestData, this.chartData, this.filterType)
-      .then(res => {
-        this.chartData = res.data
-        this.$emit('updateSubtitle', res.total)
-        this.createChart('countCustomersGraph')
-      })
+        .then(res => {
+          this.chartData = res.data
+          this.$emit('updateSubtitle', res.total.toString())
+          this.createChart('countCustomersGraph')
+        })
     },
     createChart (chartId) {
       if (myChart) {
@@ -167,6 +172,7 @@ export default {
       if (days <= 1) {
         this.requestData.dataPointCount = 24
       } else if (days > 1) {
+        console.log(days)
         this.requestData.dataPointCount = days
       }
     },
