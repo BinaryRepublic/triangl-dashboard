@@ -13,13 +13,12 @@
 
 import * as d3 from 'd3'
 import DataController from '../../../controllers/DataController'
+import {getImageSizeAndPos} from './utils'
+import {getRequestData, areas} from './mock'
 
 var context
 var backgroundImage
 var imageRatio = 2.39
-var imageSize = { width: '', height: '' }
-var difWidth
-var difHeight
 var opacities = []
 var amountVertices
 
@@ -78,95 +77,8 @@ export default {
     return {
       canvasWidth: 632,
       canvasHeight: 316,
-      requestData: {
-        'mapId': '3f18f9da-93d1-4319-95bd-702d24f48708',
-        'from': this.selected.startDate,
-        'to': this.selected.endDate,
-        'areaDtos': [
-          {
-            'corner1': {
-              'x': 0,
-              'y': 149
-            },
-            'corner2': {
-              'x': 203,
-              'y': 300
-            }
-          },
-          {
-            'corner1': {
-              'x': 203,
-              'y': 149
-            },
-            'corner2': {
-              'x': 393,
-              'y': 300
-            }
-          },
-          {
-            'corner1': {
-              'x': 393,
-              'y': 190
-            },
-            'corner2': {
-              'x': 600,
-              'y': 300
-            }
-          },
-          {
-            'corner1': {
-              'x': 506,
-              'y': 0
-            },
-            'corner2': {
-              'x': 600,
-              'y': 191
-            }
-          }
-        ]
-      },
-      areas: [
-        {
-          points: [
-            { 'x': 0, 'y': 228 },
-            { 'x': 124, 'y': 186 },
-            { 'x': 124, 'y': 291 },
-            { 'x': 0, 'y': 291 }
-          ],
-          'dwellTime': ''
-        },
-        {
-          points: [
-            { 'x': 124, 'y': 186 },
-            { 'x': 205, 'y': 160 },
-            { 'x': 214, 'y': 193 },
-            { 'x': 214, 'y': 291 },
-            { 'x': 124, 'y': 291 }
-          ],
-          'dwellTime': ''
-        },
-        {
-          points: [
-            { 'x': 214, 'y': 192 },
-            { 'x': 292, 'y': 166 },
-            { 'x': 298, 'y': 183 },
-            { 'x': 298, 'y': 194 },
-            { 'x': 536, 'y': 194 },
-            { 'x': 536, 'y': 291 },
-            { 'x': 214, 'y': 291 }
-          ],
-          'dwellTime': ''
-        },
-        {
-          points: [
-            { 'x': 536, 'y': 291 },
-            { 'x': 630, 'y': 291 },
-            { 'x': 630, 'y': 27 },
-            { 'x': 536, 'y': 53 }
-          ],
-          'dwellTime': ''
-        }
-      ],
+      requestData: getRequestData(this.selected.startDate, this.selected.endDate),
+      areas: areas,
       hoveredArea: {
         'dwellTime': ''
       }
@@ -175,35 +87,18 @@ export default {
   methods: {
     loadData () {
       this.controller.getMapData(this.requestData, this.areas)
-      .then(data => {
-        this.areas = data
-        this.drawRect()
-        this.createImage()
-      })
+        .then(data => {
+          this.areas = data
+          this.drawRect()
+          this.createImage()
+        })
     },
     createImage () {
-      var canvasRatio = this.canvasWidth / this.canvasHeight
-      if (imageRatio > canvasRatio) {
-        imageSize.width = this.canvasWidth
-        imageSize.height = imageSize.width / imageRatio
-        difHeight = (this.canvasHeight - imageSize.height) / 2
-        difWidth = 0
-      } else if (imageRatio < canvasRatio) {
-        imageSize.height = this.canvasHeight
-        imageSize.width = imageSize.height * imageRatio
-        difWidth = (this.canvasWidth - imageSize.width) / 2
-        difHeight = 0
-      } else {
-        imageSize.width = this.canvasWidth
-        imageSize.height = this.canvasHeight
-        difWidth = 0
-        difHeight = 0
-      }
-      this.image = [difWidth, difHeight]
+      const result = getImageSizeAndPos(imageRatio, this.canvasWidth, this.canvasHeight)
       backgroundImage = new Image()
       backgroundImage.src = '../static/campus.svg'
       backgroundImage.onload = () => {
-        context.drawImage(backgroundImage, difWidth, difHeight, imageSize.width, imageSize.height)
+        context.drawImage(backgroundImage, result.posX, result.posY, result.width, result.height)
       }
     },
     drawRect () {

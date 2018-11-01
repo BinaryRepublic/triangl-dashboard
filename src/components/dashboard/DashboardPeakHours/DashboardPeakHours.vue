@@ -47,22 +47,22 @@ export default {
   methods: {
     loadData () {
       this.controller.getPeekHoursData(this.requestData)
-      .then(data => {
-        let element = document.getElementById('heatmap')
-        let child = element.children[0]
-        if (child != null) {
-          element.removeChild(child)
-        }
+        .then(data => {
+          let element = document.getElementById('heatmap')
+          let child = element.children[0]
+          if (child != null) {
+            element.removeChild(child)
+          }
 
-        const chart = anychart.heatMap(data);
-        chart.container('heatmap');
-        chart.labels(false);
-        chart.legend(false);
-        chart.draw();
+          const chart = anychart.heatMap(data)
+          chart.container('heatmap')
+          chart.labels(false)
+          chart.legend(false)
+          chart.draw()
 
-        let creditsElement = document.getElementsByClassName('anychart-credits')[0];
-        creditsElement.parentNode.removeChild(creditsElement)
-      })
+          let creditsElement = document.getElementsByClassName('anychart-credits')[0]
+          creditsElement.parentNode.removeChild(creditsElement)
+        })
     }
   }
 }
@@ -71,7 +71,7 @@ export default {
 <style lang="less">
 #heatmap{
   height: 315px;
-  widows: 80%;
+  width: 80%;
 }
 #legend{
   background-image: linear-gradient(to right, #90caf9 , #01579b);
