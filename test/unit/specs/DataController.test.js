@@ -18,6 +18,7 @@ describe('DataController.js', () => {
       .then(total => {
         expect(total).toEqual(mockData.data.total)
       })
+      .catch(err => fail(err))
   })
 
   it('should return data for Count Customers diagram', () => {
@@ -33,6 +34,7 @@ describe('DataController.js', () => {
       .then(data => {
         expect(data).toEqual({data: { datasets: [ { data: [36, 0, 0, 0, 65, 0, 0] } ], labels: [] } , total: 42})
       })
+      .catch(err => fail(err))
   })
 
   it('should return data for Count Peek Hours', () => {
@@ -314,6 +316,7 @@ describe('DataController.js', () => {
       .then(data => {
         expect(data).toEqual(expectedData)
       })
+      .catch(err => fail(err))
   })
 
   it('should return data for Map diagram', () => {
