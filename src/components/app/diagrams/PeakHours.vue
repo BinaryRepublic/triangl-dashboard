@@ -1,5 +1,10 @@
 <template>
   <div id="container">
+    <div id="legend-container">
+      <div id="legend"/>
+      <div id="legend-text-left"><font size="-1">0</font></div>
+      <div id="legend-text-right"><font size="-1">1000+</font></div>
+    </div>
     <div id="heatmap"/>
   </div>
 </template>
@@ -52,7 +57,7 @@ export default {
         const chart = anychart.heatMap(data);
         chart.container('heatmap');
         chart.labels(false);
-        chart.legend(true);
+        chart.legend(false);
         chart.draw();
 
         let creditsElement = document.getElementsByClassName('anychart-credits')[0];
@@ -65,6 +70,17 @@ export default {
 
 <style lang="less">
 #heatmap{
-  height: 355px;
+  height: 315px;
+  widows: 80%;
+}
+#legend{
+  background-image: linear-gradient(to right, #90caf9 , #01579b);
+  height: 25px;
+}
+#legend-text-left{
+  float: left;
+}
+#legend-text-right{
+  float: right;
 }
 </style>
