@@ -7,7 +7,7 @@ import router from './router'
 import VueResource from 'vue-resource'
 import axios from 'axios'
 import { MdButton } from 'vue-material/dist/components'
-import 'vue-material/dist/vue-material.min.css'
+// import 'vue-material/dist/vue-material.min.css'
 const config = require('../config')
 
 Vue.prototype.$api = axios.create({

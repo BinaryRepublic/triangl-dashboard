@@ -1,7 +1,7 @@
 <template>
   <section class="lineGraph">
     <canvas id="countCustomersGraph"></canvas>
-    <md-button v-on:click="exportCsv" class="md-primary">Export</md-button>
+    <!-- <md-button v-on:click="exportCsv" class="md-primary">Export</md-button> -->
   </section>
 </template>
 
