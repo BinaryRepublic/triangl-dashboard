@@ -71,7 +71,7 @@ export default {
 <style lang="less">
 #heatmap{
   height: 315px;
-  width: 80%;
+  /*width: 80%;*/
 }
 #legend{
   background-image: linear-gradient(to right, #90caf9 , #01579b);
