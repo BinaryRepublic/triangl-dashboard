@@ -41,7 +41,8 @@ export default {
     return {
       selectedObj: {
         startDate: new Date(n.getFullYear(), n.getMonth(), n.getDate() - 6).toISOString(),
-        endDate: new Date(n.getFullYear(), n.getMonth(), n.getDate(), 23, 59, 59).toISOString()
+        endDate: new Date(n.getFullYear(), n.getMonth(), n.getDate(), 23, 59, 59).toISOString(),
+        timeZoneDifference: 0
       },
       selectedObjActive: {
         startDate: new Date(n.getFullYear(), n.getMonth(), n.getDate(), n.getHours() - 1, n.getMinutes(), n.getSeconds(), n.getMilliseconds()).toISOString(),
@@ -53,12 +54,12 @@ export default {
   },
   methods: {
     selected (e) {
-      console.log(e.start)
-      console.log(e.start.getTimezoneOffset())
-      console.log(e.end)
-      console.log(e.end.getTimezoneOffset())
-      this.selectedObj.startDate = e.start
-      this.selectedObj.endDate = e.end
+      this.selectedObj.startDate = new Date(e.start.getFullYear(), e.start.getMonth(), e.start.getDate() - 1).toISOString()
+      this.selectedObj.endDate = new Date(e.end.getFullYear(), e.end.getMonth(), e.end.getDate() - 1, 23, 59, 59).toISOString()
+
+      var startTimeZone = e.start.getTimezoneOffset()
+      var endTimeZone = e.end.getTimezoneOffset()
+      this.selectedObj.timeZoneDifference = endTimeZone - startTimeZone
     }
   }
 }

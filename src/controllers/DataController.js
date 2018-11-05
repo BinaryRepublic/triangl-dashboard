@@ -76,6 +76,7 @@ export default class DataController {
     return new Promise((resolve, reject) => {
       this.api.post('visitors/count', parameters)
         .then(response => {
+          console.log(response.data)
           chartData.labels = []
           chartData.datasets[0].data = []
           const data = response.data
@@ -84,12 +85,16 @@ export default class DataController {
           for (var x = 0; x < data.data.length; x++) {
             chartData.datasets[0].data.push(data.data[x].count)
             if (filterType === 'hours') {
+              console.log(data.data[x].to)
               dateToIso = data.data[x].to
+              console.log(dateToIso)
               dateToObj = new Date(dateToIso)
+              console.log(dateToObj)
               newDateHour = dateToObj.getHours() + 1
               if (newDateHour.toString().length === 1) {
                 newDateHour = '0' + newDateHour
               }
+              console.log(newDateHour)
               chartData.labels.push(newDateHour + ':00')
             } else if (filterType === 'days') {
               dateToIso = data.data[x].to
