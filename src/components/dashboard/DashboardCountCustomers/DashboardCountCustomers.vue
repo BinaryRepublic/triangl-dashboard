@@ -23,20 +23,26 @@ export default {
   watch: {
     selected: {
       handler: function (val) {
-        console.log(this.requestData.from)
-        console.log(this.requestData.to)
-        this.requestData.from = new Date(val.startDate.getFullYear(), val.startDate.getMonth(), val.startDate.getDate() - 1).toISOString()
-        this.requestData.to = new Date(val.endDate.getFullYear(), val.endDate.getMonth(), val.endDate.getDate() - 1, 22, 59, 59).toISOString()
-        console.log(this.requestData.from)
-        console.log(this.requestData.to)
+        this.requestData.from = val.startDate
+        this.requestData.to = val.endDate
+        console.log(val.startDate)
+        console.log(val.endDate)
 
         dateObjFrom = new Date(this.requestData.from)
         dateObjTo = new Date(this.requestData.to)
         diffMilliSeconds = Math.abs(dateObjFrom - dateObjTo)
         diffDays = this.convertMillisecondsToDays(diffMilliSeconds)
-
         this.setDataPointCount(diffDays.days)
         this.setFilterType(diffDays.days)
+
+        if (val.timeZoneDifference) {
+          console.log('Time Zone Difference')
+          var d = new Date(val.endDate)
+          var hours = d.getHours()
+          d.setHours(hours - (val.timeZoneDifference / 60))
+          this.requestData.to = d.toISOString()
+        }
+
         this.loadData()
       },
       deep: true
@@ -48,6 +54,8 @@ export default {
   mounted () {
     dateObjFrom = new Date(this.requestData.from)
     dateObjTo = new Date(this.requestData.to)
+    console.log(dateObjFrom)
+    console.log(dateObjTo)
     diffMilliSeconds = Math.abs(dateObjFrom - dateObjTo)
     diffDays = this.convertMillisecondsToDays(diffMilliSeconds)
     this.setDataPointCount(diffDays.days)
@@ -159,11 +167,13 @@ export default {
       chart.destroy()
     },
     convertMillisecondsToDays (milliseconds) {
+      console.log(milliseconds)
       var days, hours, minutes, seconds
-      seconds = Math.floor(milliseconds / 1000)
-      minutes = Math.floor(seconds / 60)
-      hours = Math.floor(minutes / 60)
-      days = Math.floor(hours / 24) + 1
+      seconds = Math.round(milliseconds / 1000)
+      minutes = Math.round(seconds / 60)
+      hours = Math.round(minutes / 60)
+      console.log(hours)
+      days = Math.floor(hours / 24)
       return {
         days
       }
@@ -172,7 +182,6 @@ export default {
       if (days <= 1) {
         this.requestData.dataPointCount = 24
       } else if (days > 1) {
-        console.log(days)
         this.requestData.dataPointCount = days
       }
     },

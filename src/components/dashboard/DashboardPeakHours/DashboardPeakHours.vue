@@ -22,8 +22,8 @@ export default {
   watch: {
     selected: {
       handler: function (val) {
-        this.requestData.from = new Date(val.startDate.getFullYear(), val.startDate.getMonth(), val.startDate.getDate() - 1).toISOString()
-        this.requestData.to = new Date(val.endDate.getFullYear(), val.endDate.getMonth(), val.endDate.getDate() - 1, 23, 59, 59).toISOString()
+        this.requestData.from = val.startDate
+        this.requestData.to = val.endDate
         this.loadData()
       },
       deep: true
