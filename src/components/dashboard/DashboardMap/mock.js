@@ -45,7 +45,8 @@ export const areas = [
       { 'x': 124, 'y': 291 },
       { 'x': 0, 'y': 291 }
     ],
-    'dwellTime': ''
+    'dwellTime': '',
+    'customerCount': ''
   },
   {
     points: [
@@ -55,7 +56,8 @@ export const areas = [
       { 'x': 214, 'y': 291 },
       { 'x': 124, 'y': 291 }
     ],
-    'dwellTime': ''
+    'dwellTime': '',
+    'customerCount': ''
   },
   {
     points: [
@@ -67,7 +69,8 @@ export const areas = [
       { 'x': 536, 'y': 291 },
       { 'x': 214, 'y': 291 }
     ],
-    'dwellTime': ''
+    'dwellTime': '',
+    'customerCount': ''
   }
   // {
   //   points: [
@@ -76,6 +79,7 @@ export const areas = [
   //     { 'x': 630, 'y': 27 },
   //     { 'x': 536, 'y': 53 }
   //   ],
-  //   'dwellTime': ''
+  //   'dwellTime': '',
+  //   'customerCount': ''
   // }
 ]

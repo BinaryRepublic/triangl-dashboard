@@ -116,6 +116,7 @@ export default class DataController {
           console.log(response)
           for (var x = 0; x < response.data.length; x++) {
             areas[x].dwellTime = response.data[x].dwellTime
+            areas[x].customerCount = response.data[x].customerCount
           }
 
           resolve(areas)
