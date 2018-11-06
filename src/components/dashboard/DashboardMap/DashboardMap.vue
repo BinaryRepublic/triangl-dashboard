@@ -66,6 +66,7 @@ export default {
     })
     this.hoveredArea.dwellTime = that.hoveredArea.dwellTime
     this.loadData()
+    setInterval(this.loadData, 300000)
   },
   watch: {
     selected: {
@@ -117,6 +118,7 @@ export default {
         dwellTimes.push(area.dwellTime)
       }
       var maxDwellTime = Math.max(...dwellTimes)
+      context.clearRect(0, 0, this.canvasWidth, this.canvasHeight)
       for (var j in this.areas) {
         var rect = this.areas[j]
         opacities[j] = rect.dwellTime / maxDwellTime
