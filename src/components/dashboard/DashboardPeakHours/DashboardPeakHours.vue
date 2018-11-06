@@ -1,11 +1,11 @@
 <template>
   <div id="container">
+    <div id="heatmap"/>
     <div id="legend-container">
       <div id="legend"/>
       <div id="legend-text-left"><font size="-1">0</font></div>
       <div id="legend-text-right"><font size="-1">1000+</font></div>
     </div>
-    <div id="heatmap"/>
   </div>
 </template>
 
