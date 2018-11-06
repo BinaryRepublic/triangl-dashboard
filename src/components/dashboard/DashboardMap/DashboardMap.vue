@@ -6,6 +6,9 @@
     <div class="sideBar">
       <p>Average Dwelltime: {{ hoveredArea.dwellTime }}</p>
     </div>
+    <div class="sideBar">
+      <p>Amount of Customers: {{ hoveredArea.customerCount }}</p>
+    </div>
   </div>
 </template>
 
@@ -39,7 +42,6 @@ export default {
       var rect = this.getBoundingClientRect()
       var x = d3.event.clientX - rect.left
       var y = d3.event.clientY - rect.top
-      console.log(x, y)
       var isArea = false
       for (var k = 0; k < that.areas.length; k++) {
         var area = that.areas[k]
@@ -53,11 +55,13 @@ export default {
         if (that.pInPoly(amountVertices, arrayValuesX, arrayValuesY, x, y)) {
           that.hoveredArea.dwellTime = area.dwellTime
           that.hoveredArea.dwellTime = Math.floor(that.hoveredArea.dwellTime / 60) + ':' + ('0' + Math.floor(that.hoveredArea.dwellTime % 60)).slice(-2)
+          that.hoveredArea.customerCount = area.customerCount
           isArea = true
         }
       }
       if (isArea === false) {
         that.hoveredArea.dwellTime = ''
+        that.hoveredArea.customerCount = ''
       }
     })
     this.hoveredArea.dwellTime = that.hoveredArea.dwellTime
@@ -80,7 +84,8 @@ export default {
       requestData: getRequestData(this.selected.startDate, this.selected.endDate),
       areas: areas,
       hoveredArea: {
-        'dwellTime': ''
+        'dwellTime': '',
+        'customerCount': ''
       }
     }
   },
@@ -152,6 +157,7 @@ export default {
   }
   .sideBar{
     float: left;
+    width: 50%;
     margin-top: 10px;
   }
 </style>
