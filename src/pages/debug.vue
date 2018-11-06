@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import Router from '../components/app/elements/Router.vue'
+import Router from '../components/debug/DebugRouter.vue'
 
 export default {
   components: {

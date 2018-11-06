@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import MockAPI from '../../../src/controllers/MockAPI'
 import DataController from '../../../src/controllers/DataController'
 
@@ -17,6 +18,7 @@ describe('DataController.js', () => {
       .then(total => {
         expect(total).toEqual(mockData.data.total)
       })
+      .catch(err => fail(err))
   })
 
   it('should return data for Count Customers diagram', () => {
@@ -32,6 +34,7 @@ describe('DataController.js', () => {
       .then(data => {
         expect(data).toEqual({data: { datasets: [ { data: [36, 0, 0, 0, 65, 0, 0] } ], labels: [] } , total: 42})
       })
+      .catch(err => fail(err))
   })
 
   it('should return data for Count Peek Hours', () => {
@@ -313,5 +316,210 @@ describe('DataController.js', () => {
       .then(data => {
         expect(data).toEqual(expectedData)
       })
+      .catch(err => fail(err))
+  })
+
+  it('should return data for Map diagram', () => {
+    let mockData = {
+      data: [
+        {
+          corner1: {
+            x: 0,
+            y: 149
+          },
+          corner2: {
+            x: 203,
+            y: 300
+          },
+          dwellTime: 0
+        },
+        {
+          corner1: {
+            x: 203,
+            y: 149
+          },
+          corner2: {
+            x: 393,
+            y: 300
+          },
+          dwellTime: 0
+        },
+        {
+          corner1: {
+            x: 393,
+            y: 190
+          },
+          corner2: {
+            x: 600,
+            y: 300
+          },
+          dwellTime: 0
+        },
+        {
+          corner1: {
+            x: 506,
+            y: 0
+          },
+          corner2: {
+            x: 600,
+            y: 191
+          },
+          dwellTime: 0
+        }
+      ]
+    }
+
+    let areas = [
+      {
+        points: [
+          { 'x': 0, 'y': 228 },
+          { 'x': 124, 'y': 186 },
+          { 'x': 124, 'y': 291 },
+          { 'x': 0, 'y': 291 }
+        ],
+        'dwellTime': ''
+      },
+      {
+        points: [
+          { 'x': 124, 'y': 186 },
+          { 'x': 205, 'y': 160 },
+          { 'x': 214, 'y': 193 },
+          { 'x': 214, 'y': 291 },
+          { 'x': 124, 'y': 291 }
+        ],
+        'dwellTime': ''
+      },
+      {
+        points: [
+          { 'x': 214, 'y': 192 },
+          { 'x': 292, 'y': 166 },
+          { 'x': 298, 'y': 183 },
+          { 'x': 298, 'y': 194 },
+          { 'x': 536, 'y': 194 },
+          { 'x': 536, 'y': 291 },
+          { 'x': 214, 'y': 291 }
+        ],
+        'dwellTime': ''
+      },
+      {
+        points: [
+          { 'x': 536, 'y': 291 },
+          { 'x': 630, 'y': 291 },
+          { 'x': 630, 'y': 27 },
+          { 'x': 536, 'y': 53 }
+        ],
+        'dwellTime': ''
+      }
+    ]
+
+    let expectedData = [
+      {
+        points: [
+          {
+            x: 0,
+            y: 228
+          },
+          {
+            x: 124,
+            y: 186
+          },
+          {
+            x: 124,
+            y: 291
+          },
+          {
+            x: 0,
+            y: 291
+          }
+        ],
+        dwellTime: 0
+      },
+      {
+        points: [
+          {
+            x: 124,
+            y: 186
+          },
+          {
+            x: 205,
+            y: 160
+          },
+          {
+            x: 214,
+            y: 193
+          },
+          {
+            x: 214,
+            y: 291
+          },
+          {
+            x: 124,
+            y: 291
+          }
+        ],
+        dwellTime: 0
+      },
+      {
+        points: [
+          {
+            x: 214,
+            y: 192
+          },
+          {
+            x: 292,
+            y: 166
+          },
+          {
+            x: 298,
+            y: 183
+          },
+          {
+            x: 298,
+            y: 194
+          },
+          {
+            x: 536,
+            y: 194
+          },
+          {
+            x: 536,
+            y: 291
+          },
+          {
+            x: 214,
+            y: 291
+          }
+        ],
+        dwellTime: 0
+      },
+      {
+        points: [
+          {
+            x: 536,
+            y: 291
+          },
+          {
+            x: 630,
+            y: 291
+          },
+          {
+            x: 630,
+            y: 27
+          },
+          {
+            x: 536,
+            y: 53
+          }
+        ],
+        dwellTime: 0
+      }
+    ]
+
+    api.mockData = mockData
+    controller.getMapData({}, areas)
+      .then(data => {
+        expect(data).toEqual(expectedData)
+      })
+      .catch(err => fail(err))
   })
 })
