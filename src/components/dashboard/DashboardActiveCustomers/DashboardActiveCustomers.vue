@@ -26,8 +26,14 @@ export default {
     this.controller = new DataController(this.$api)
   },
   mounted () {
-    this.controller.getActiveCustomersData(this.requestData)
-      .then(total => this.$emit('updateSubtitle', total.toString()))
+    this.loadData()
+    setInterval(this.loadData, 300000)
+  },
+  methods: {
+    loadData () {
+      this.controller.getActiveCustomersData(this.requestData)
+        .then(total => this.$emit('updateSubtitle', total.toString()))
+    }
   }
 }
 </script>
