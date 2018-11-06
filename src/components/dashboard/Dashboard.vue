@@ -26,7 +26,6 @@ import PeakHours from './DashboardPeakHours/DashboardPeakHours'
 import Map from './DashboardMap/DashboardMap'
 
 var n = new Date()
-console.log(n)
 
 export default {
   components: {

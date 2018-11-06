@@ -54,13 +54,12 @@ export default {
   mounted () {
     dateObjFrom = new Date(this.requestData.from)
     dateObjTo = new Date(this.requestData.to)
-    console.log(dateObjFrom)
-    console.log(dateObjTo)
     diffMilliSeconds = Math.abs(dateObjFrom - dateObjTo)
     diffDays = this.convertMillisecondsToDays(diffMilliSeconds)
     this.setDataPointCount(diffDays.days)
     this.setFilterType(diffDays.days)
     this.loadData()
+    // setInterval(this.loadData, 300000)
   },
   data () {
     return {
@@ -122,7 +121,6 @@ export default {
         })
     },
     loadData () {
-      console.log(this.requestData)
       this.controller.getCountCustomersData(this.requestData, this.chartData, this.filterType)
         .then(res => {
           this.chartData = res.data
@@ -167,12 +165,10 @@ export default {
       chart.destroy()
     },
     convertMillisecondsToDays (milliseconds) {
-      console.log(milliseconds)
       var days, hours, minutes, seconds
       seconds = Math.round(milliseconds / 1000)
       minutes = Math.round(seconds / 60)
       hours = Math.round(minutes / 60)
-      console.log(hours)
       days = Math.floor(hours / 24)
       return {
         days

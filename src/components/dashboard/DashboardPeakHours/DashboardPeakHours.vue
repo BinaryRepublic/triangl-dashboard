@@ -34,6 +34,7 @@ export default {
   },
   mounted () {
     this.loadData()
+    setInterval(this.loadData, 300000)
   },
   data () {
     return {
