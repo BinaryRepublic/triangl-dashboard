@@ -47,6 +47,7 @@ export default {
   background-color: #ffffff;
   width: 30%;
   padding: 20px;
+  height: auto;
   .point{
     float: left;
     width: 12px;
