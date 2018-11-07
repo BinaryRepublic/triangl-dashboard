@@ -108,7 +108,6 @@ export default class DataController {
     return new Promise((resolve, reject) => {
       this.api.post('visitors/areas/duration', parameters)
         .then(response => {
-          console.log(response)
           for (var x = 0; x < response.data.length; x++) {
             areas[x].dwellTime = response.data[x].dwellTime
             areas[x].customerCount = response.data[x].customerCount

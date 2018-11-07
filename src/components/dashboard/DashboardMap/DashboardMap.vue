@@ -101,7 +101,6 @@ export default {
     },
     createImage () {
       const result = getImageSizeAndPos(imageRatio, this.canvasWidth, this.canvasHeight)
-      console.log(result)
       backgroundImage = new Image()
       backgroundImage.src = '../static/campus.svg'
       backgroundImage.onload = () => {
