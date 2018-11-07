@@ -57,7 +57,7 @@ export default {
     this.setDataPointCount(diffDays.days)
     this.setFilterType(diffDays.days)
     this.loadData()
-    setInterval(this.loadData, 10000)
+    setInterval(this.loadData, 300000)
   },
   data () {
     return {
