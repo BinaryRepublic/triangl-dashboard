@@ -25,8 +25,6 @@ export default {
       handler: function (val) {
         this.requestData.from = val.startDate
         this.requestData.to = val.endDate
-        console.log(val.startDate)
-        console.log(val.endDate)
 
         dateObjFrom = new Date(this.requestData.from)
         dateObjTo = new Date(this.requestData.to)
@@ -59,7 +57,7 @@ export default {
     this.setDataPointCount(diffDays.days)
     this.setFilterType(diffDays.days)
     this.loadData()
-    // setInterval(this.loadData, 300000)
+    setInterval(this.loadData, 10000)
   },
   data () {
     return {
@@ -125,13 +123,14 @@ export default {
         .then(res => {
           this.chartData = res.data
           this.$emit('updateSubtitle', res.total.toString())
-          this.createChart('countCustomersGraph')
+          if (myChart) {
+            myChart.update()
+          } else {
+            this.createChart('countCustomersGraph')
+          }
         })
     },
     createChart (chartId) {
-      if (myChart) {
-        this.destroyChart(myChart)
-      }
       const ctx = document.getElementById(chartId)
       myChart = new Chart(ctx, {
         type: 'line',
