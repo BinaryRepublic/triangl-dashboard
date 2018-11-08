@@ -2,7 +2,7 @@
   <div>
     <VueRangedatePicker
       class="datePickerGlobal"
-      @selected="(e) => { $emit('selected', e) }"
+      @selected="(e) => { $emit('selectedDateRange', e) }"
       :presetRanges="{
         today: today(),
         yesterday: yesterday(),

@@ -27,7 +27,7 @@ var amountVertices
 
 export default {
   props: {
-    selected: {
+    selectedDateRange: {
       type: Object
     }
   },
@@ -53,8 +53,7 @@ export default {
           arrayValuesY.push(area.points[i].y)
         }
         if (that.pInPoly(amountVertices, arrayValuesX, arrayValuesY, x, y)) {
-          that.hoveredArea.dwellTime = area.dwellTime
-          that.hoveredArea.dwellTime = Math.floor(that.hoveredArea.dwellTime / 60) + ':' + ('0' + Math.floor(that.hoveredArea.dwellTime % 60)).slice(-2)
+          that.hoveredArea.dwellTime = Math.floor(area.dwellTime / 60) + ':' + ('0' + Math.floor(area.dwellTime % 60)).slice(-2)
           that.hoveredArea.customerCount = area.customerCount
           isArea = true
         }
@@ -69,7 +68,7 @@ export default {
     setInterval(this.loadData, 300000)
   },
   watch: {
-    selected: {
+    selectedDateRange: {
       handler: function (val) {
         this.requestData.from = val.startDate
         this.requestData.to = val.endDate
@@ -82,7 +81,7 @@ export default {
     return {
       canvasWidth: 632,
       canvasHeight: 316,
-      requestData: getRequestData(this.selected.startDate, this.selected.endDate),
+      requestData: getRequestData(this.selectedDateRange.startDate, this.selectedDateRange.endDate),
       areas: areas,
       hoveredArea: {
         'dwellTime': '',
@@ -108,9 +107,9 @@ export default {
       }
     },
     drawRect () {
-      for (var k in opacities) {
-        opacities[k] = 0
-      }
+      // for (var k in opacities) {
+      //   opacities[k] = 0
+      // }
       var dwellTimes = []
       for (var i = 0; i < this.areas.length; i++) {
         var area = this.areas[i]
@@ -154,7 +153,6 @@ export default {
 <style lang="less">
   .canvasWrapper{
     float: left;
-    border: 1px solid black;
   }
   .sideBar{
     float: left;
