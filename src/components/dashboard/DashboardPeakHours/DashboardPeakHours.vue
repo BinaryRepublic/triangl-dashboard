@@ -15,12 +15,12 @@ import DataController from '../../../controllers/DataController'
 
 export default {
   props: {
-    selected: {
+    selectedDateRange: {
       type: Object
     }
   },
   watch: {
-    selected: {
+    selectedDateRange: {
       handler: function (val) {
         this.requestData.from = val.startDate
         this.requestData.to = val.endDate
@@ -40,8 +40,8 @@ export default {
     return {
       requestData: {
         customerId: 'c1',
-        from: this.selected.startDate,
-        to: this.selected.endDate
+        from: this.selectedDateRange.startDate,
+        to: this.selectedDateRange.endDate
       }
     }
   },

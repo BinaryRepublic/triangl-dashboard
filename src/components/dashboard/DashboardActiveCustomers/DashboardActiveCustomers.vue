@@ -8,7 +8,7 @@ import DataController from '../../../controllers/DataController'
 
 export default {
   props: {
-    selectedActive: {
+    selectedDateRangeActive: {
       type: Object
     }
   },
@@ -16,8 +16,8 @@ export default {
     return {
       requestData: {
         customerId: 'c1',
-        from: this.selectedActive.startDate,
-        to: this.selectedActive.endDate,
+        from: this.selectedDateRangeActive.startDate,
+        to: this.selectedDateRangeActive.endDate,
         dataPointCount: 1
       }
     }
