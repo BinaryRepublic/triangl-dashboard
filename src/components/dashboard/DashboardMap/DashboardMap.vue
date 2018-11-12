@@ -38,6 +38,32 @@ export default {
     const canvas = d3.select('.canvasBox').call(d3.zoom().scaleExtent([1, 5]).on('zoom', this.zoom))
     context = canvas.node().getContext('2d')
     const that = this
+
+    canvas.on('click', function () {
+      var rect = this.getBoundingClientRect()
+      var x = d3.event.clientX - rect.left
+      var y = d3.event.clientY - rect.top
+      var isArea = false
+      for (var k = 0; k < that.areas.length; k++) {
+        var area = that.areas[k]
+        amountVertices = area.points.length
+        var arrayValuesX = []
+        var arrayValuesY = []
+        for (var i = 0; i < amountVertices; i++) {
+          arrayValuesX.push(area.points[i].x)
+          arrayValuesY.push(area.points[i].y)
+        }
+        if (that.pInPoly(amountVertices, arrayValuesX, arrayValuesY, x, y)) {
+          isArea = true
+        }
+      }
+
+      if (isArea === true) {
+        let encoded = Buffer.from(JSON.stringify(arrayValuesX)).toString('base64')
+        that.$router.push('/space/' + encoded)
+      }
+    })
+
     canvas.on('mousemove', function () {
       var rect = this.getBoundingClientRect()
       var x = d3.event.clientX - rect.left

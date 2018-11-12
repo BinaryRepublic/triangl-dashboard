@@ -10,9 +10,7 @@ import { MdButton } from 'vue-material/dist/components'
 import 'vue-material/dist/vue-material.min.css'
 const config = require('../config')
 
-Vue.prototype.$api = axios.create({
-  baseURL: config.API_ENDPOINT.live
-})
+Vue.prototype.$api = axios.create({ baseURL: config.API_ENDPOINT.live })
 
 Vue.config.devtools = true
 
