@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="canvasWrapper">
-      <canvas class="canvasBox" :width="canvasWidth" :height="canvasHeight"></canvas>
+      <canvas class="canvasBox" :width="canvasWidth" :height="canvasHeight" ></canvas>
     </div>
     <div class="sideBar">
       <p>Average Dwelltime: {{ hoveredArea.dwellTime }}</p>

@@ -10,9 +10,12 @@
 
 export default {
   props: {
-    componentSize: {
+    componentWidth: {
       type: String,
       required: true
+    },
+    componentHeight: {
+      type: String
     },
     type: {
       type: String,
@@ -28,10 +31,11 @@ export default {
   methods: {
     getClasses () {
       return {
-        'one': this.componentSize === 'one',
-        'two': this.componentSize === 'two',
-        'three': this.componentSize === 'three',
-        'blue': this.type === 'blue'
+        'width_one': this.componentWidth === 'one',
+        'width_two': this.componentWidth === 'two',
+        'width_three': this.componentWidth === 'three',
+        'height_one': this.componentHeight === 'one',
+        'type_blue': this.type === 'blue'
       }
     }
   }
@@ -46,17 +50,19 @@ export default {
     margin: 10px;
     background-color: #ffffff;
     padding: 20px;
-
-    &.one {
+    &.width_one {
       width: calc(33.3333333% - 20px);
     }
-    &.two {
+    &.width_two {
       width: calc(66.666666666% - 20px);
     }
-    &.three {
+    &.width_three {
       width: calc(100% - 20px);
     }
-    &.blue {
+    &.height_one {
+      height: 80px;
+    }
+    &.type_blue {
       background-color: #0da8f9;
       color: white;
     }

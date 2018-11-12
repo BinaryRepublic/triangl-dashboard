@@ -31,6 +31,7 @@ export default {
   },
   methods: {
     loadData () {
+      console.log('loadData')
       this.controller.getActiveCustomersData(this.requestData)
         .then(total => this.$emit('updateSubtitle', total.toString()))
     }
