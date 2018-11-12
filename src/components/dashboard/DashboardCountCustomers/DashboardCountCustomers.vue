@@ -144,7 +144,9 @@ export default {
       this.controller.getCountCustomersData(this.requestData, this.chartData, this.filterType)
         .then(res => {
           this.chartData = res.data
-          myChart.data = this.chartData
+          if (myChart) {
+            myChart.data = this.chartData
+          }
           this.$emit('updateSubtitle', res.total.toString())
           if (myChart) {
             myChart.update()
