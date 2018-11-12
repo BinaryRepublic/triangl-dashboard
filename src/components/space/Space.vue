@@ -1,6 +1,7 @@
 <template>
   <div class="container-content">
     <DatePicker @selectedDateRange="getSelectedDateRange" />
+    {{ spaceData }}
     <div class="clear"></div>
     <Module componentWidth="one" componentHeight="one">
       <ActiveCustomers/>
@@ -27,7 +28,22 @@ import PeakHours from '../shared/PeakHours/PeakHours'
 import DatePicker from '../shared/DatePicker/DatePicker'
 
 export default {
-  components: {DatePicker, PeakHours, ActiveCustomers, Module},
+  components: { DatePicker, PeakHours, ActiveCustomers, Module },
+  props: {
+    id: {
+      type: String
+    }, 
+    spaceData: {
+      type: Object
+    }
+  },
+  beforeMount () {
+    try {
+      this.spaceData = JSON.parse(atob(this.id))
+    } catch (_) {
+      this.$router.push('/')
+    }
+  },
   data () {
     return {
     }

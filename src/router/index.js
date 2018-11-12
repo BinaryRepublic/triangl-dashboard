@@ -21,8 +21,13 @@ export default new Router({
         },
         {
           path: '/space',
+          redirect: '/'
+        },
+        {
+          path: '/space/:id',
           name: 'Space',
-          component: Space
+          component: Space,
+          props: true
         },
         {
           path: '/debug',
