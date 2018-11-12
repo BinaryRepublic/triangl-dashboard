@@ -51,7 +51,7 @@ export default class DataController {
                 obj = {x: dayVal, y: '10am', heat: value.average}
               } else if (hours === 12 || hours === 13) {
                 obj = {x: dayVal, y: '12pm', heat: value.average}
-              } else if (hours === 14 || hours == 15) {
+              } else if (hours === 14 || hours === 15) {
                 obj = {x: dayVal, y: '2pm', heat: value.average}
               } else if (hours === 16 || hours === 17) {
                 obj = {x: dayVal, y: '4pm', heat: value.average}
