@@ -1,28 +1,28 @@
 <template>
   <div class="container-content">
-    <DatePicker @selectedDateRange="getSelectedDateRange" class="datePicker" format="YY MM DD HH mm ss"></DatePicker>
+    <DatePicker @selectedDateRange="getSelectedDateRange"></DatePicker>
     <div class="clear"></div>
-    <Module componentSize="two" title="Customers" :subtitle="countCustomersSubtitle">
+    <Module componentWidth="two" title="Customers" :subtitle="countCustomersSubtitle">
       <CountCustomer :selectedDateRange="selectedDateRange" @updateSubtitle="(value) => { this.countCustomersSubtitle = value; }" />
     </Module>
-    <Module componentSize="one" title="Active Customers" :subtitle="activeCustomersSubtitle" type="blue">
+    <Module componentWidth="one" title="Active Customers" :subtitle="activeCustomersSubtitle" type="blue">
       <ActiveCustomers :selectedDateRangeActive="selectedDateRangeActive" @updateSubtitle="(value) => { this.activeCustomersSubtitle = value; }" />
     </Module>
-    <Module componentSize="one" title="Peak Hours">
+    <Module componentWidth="one" title="Peak Hours">
       <PeakHours :selectedDateRange="selectedDateRange" />
     </Module>
-    <Module componentSize="two" title="Heat Map">
+    <Module componentWidth="two" title="Heat Map">
       <Map :selectedDateRange="selectedDateRange" />
     </Module>
   </div>
 </template>
 
 <script>
-import Module from './DashboardModuleTemplate/DashboardModuleTemplate'
-import DatePicker from './DashboardDatePicker/DashboardDatePicker'
+import Module from '../shared/ModuleTemplate/ModuleTemplate'
+import DatePicker from '../shared/DatePicker/DatePicker'
 import CountCustomer from './DashboardCountCustomers/DashboardCountCustomers'
-import ActiveCustomers from './DashboardActiveCustomers/DashboardActiveCustomers'
-import PeakHours from './DashboardPeakHours/DashboardPeakHours'
+import ActiveCustomers from '../shared/ActiveCustomers/ActiveCustomers'
+import PeakHours from '../shared/PeakHours/PeakHours'
 import Map from './DashboardMap/DashboardMap'
 
 var n = new Date()
