@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Header title="Triangl"></Header>
+    <Header title="triangl"></Header>
     <router-view/>
     <Footer></Footer>
   </div>
@@ -18,6 +18,10 @@ export default {
 }
 </script>
 <style lang="less">
+body {
+  font-family: 'lato-regular', sans-serif;
+  font-size: 16px;
+}
 .container {
   float: left;
   position: relative;
