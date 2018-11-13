@@ -3,6 +3,8 @@ import Router from 'vue-router'
 import LayoutApp from '../layouts/app.vue'
 import Dashboard from '../pages/dashboard.vue'
 import Space from '../pages/space.vue'
+import Spaces from '../pages/spaces.vue'
+import Account from '../pages/account.vue'
 import Debug from '../pages/debug.vue'
 
 Vue.use(Router)
@@ -20,6 +22,11 @@ export default new Router({
           component: Dashboard
         },
         {
+          path: '/spaces',
+          name: 'Spaces',
+          component: Spaces
+        },
+        {
           path: '/space',
           redirect: '/'
         },
@@ -28,6 +35,11 @@ export default new Router({
           name: 'Space',
           component: Space,
           props: true
+        },
+        {
+          path: '/account',
+          name: 'Account',
+          component: Account
         },
         {
           path: '/debug',
