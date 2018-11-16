@@ -5,9 +5,13 @@
 </template>
 
 <script>
-
 export default {
-  name: 'App'
+  name: 'App',
+  beforeMount () {
+    if (!this.$auth.isAuthenticated()) {
+      this.$auth.getAccessTokenOrLogin()
+    }
+  }
 }
 </script>
 

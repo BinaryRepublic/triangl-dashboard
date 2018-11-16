@@ -44,7 +44,7 @@ export default {
     }
   },
   beforeMount () {
-    this.controller = new DataController(this.$api)
+    this.controller = new DataController(this.$api, this.$auth)
   },
   mounted () {
     diffMilliseconds = this.convertDateRangeToMilliseconds(this.requestData.from, this.requestData.to)

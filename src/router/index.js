@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import LayoutApp from '../layouts/app.vue'
+import Callback from '../pages/authCallback.vue'
 import Dashboard from '../pages/dashboard.vue'
 import Space from '../pages/space.vue'
 import Spaces from '../pages/spaces.vue'
@@ -20,6 +21,11 @@ export default new Router({
           path: '',
           name: 'Dashboard',
           component: Dashboard
+        },
+        {
+          path: '/callback',
+          name: 'Callback',
+          component: Callback
         },
         {
           path: '/spaces',
