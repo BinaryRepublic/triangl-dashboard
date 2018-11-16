@@ -15,7 +15,9 @@
     "build": "node build/build.js"
   },
   "dependencies": {
+    "EventEmitter": "^1.0.0",
     "anychart": "^8.4.0",
+    "auth0-js": "^9.8.2",
     "axios": "^0.18.0",
     "chai": "^4.2.0",
     "chart.js": "^2.7.2",

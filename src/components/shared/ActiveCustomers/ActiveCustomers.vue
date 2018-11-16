@@ -23,7 +23,7 @@ export default {
     }
   },
   beforeMount () {
-    this.controller = new DataController(this.$api)
+    this.controller = new DataController(this.$api, this.$auth)
   },
   mounted () {
     this.loadData()
