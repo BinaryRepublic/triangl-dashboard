@@ -17,13 +17,7 @@ export default {
   },
   data () {
     return {
-      requestData: {
-        customerId: 'c1',
-        from: this.selectedDateRange.startDate,
-        to: this.selectedDateRange.endDate,
-        dataPointCount: 1,
-        area: this.area
-      }
+      requestData: this.createRequestData()
     }
   },
   beforeMount () {
@@ -55,9 +49,19 @@ export default {
     }
   },
   methods: {
+    createRequestData () {
+      var data = {
+        customerId: 'c1',
+        from: this.selectedDateRange.startDate,
+        to: this.selectedDateRange.endDate
+      }
+
+      if (this.area !== undefined) data.areaDtos = [ { corners: this.area.points } ]
+      return data
+    },
     loadData () {
-      this.controller.getActiveCustomersData(this.requestData)
-        .then(total => this.$emit('updateSubtitle', total.toString()))
+      this.controller.getLengthOfStay(this.requestData)
+      .then(str => this.$emit('updateSubtitle', str))
     }
   }
 }
