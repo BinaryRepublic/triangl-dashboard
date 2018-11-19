@@ -2,13 +2,14 @@
   <div>
     <div class="container-content">
       <h2>AP-List</h2>
-      <Router v-for="router in routers" :key="router.mac" :router="router"></Router>
+      <Router v-for="router in routers" :key="router.routerId" :router="router"></Router>
     </div>
   </div>
 </template>
 
 <script>
 import Router from '../components/debug/DebugRouter.vue'
+import DataController from '../controllers/DataController'
 
 export default {
   components: {
@@ -49,8 +50,20 @@ export default {
       ]
     }
   },
+  mounted () {
+    setInterval(() => {
+      this.getNewRouterDater()
+    }, 5000)
+    this.getNewRouterDater()
+  },
+  beforeMount () {
+    this.controller = new DataController(this.$api)
+  },
   methods: {
-
+    getNewRouterDater () {
+      this.controller.getRouterLastSeenData()
+        .then(data => this.routers = data)
+    }
   }
 }
 </script>

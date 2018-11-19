@@ -6,7 +6,7 @@ const path = require('path')
 
 module.exports = {
   API_ENDPOINT: {
-        live: "https://api.triangl.io/dashboard-service/",
+        live: "https://api.triangl.io/",
         // mock: "https://8746cdbf-7894-4c62-b3c0-80a3f3eb1292.mock.pstmn.io/"
       },
       dev: {

@@ -4,7 +4,7 @@ export default class DataController {
   }
   getActiveCustomersData (parameters) {
     return new Promise((resolve, reject) => {
-      this.api.post('/visitors/count', parameters)
+      this.api.post('dashboard-service/visitors/count', parameters)
         .then(response => {
           resolve(response.data.total)
         })
@@ -13,7 +13,7 @@ export default class DataController {
   }
   getPeekHoursData (parameters) {
     return new Promise((resolve, reject) => {
-      this.api.post('/visitors/byTimeOfDay/average', parameters)
+      this.api.post('dashboard-service/visitors/byTimeOfDay/average', parameters)
         .then(response => {
           let data = response.data
           var chartData = []
@@ -74,7 +74,7 @@ export default class DataController {
   }
   getCountCustomersData (parameters, chartData, filterType) {
     return new Promise((resolve, reject) => {
-      this.api.post('visitors/count', parameters)
+      this.api.post('dashboard-service/visitors/count', parameters)
         .then(response => {
           chartData.labels = []
           chartData.datasets[0].data = []
@@ -106,7 +106,7 @@ export default class DataController {
   }
   getMapData (parameters, areas) {
     return new Promise((resolve, reject) => {
-      this.api.post('visitors/areas/duration', parameters)
+      this.api.post('dashboard-service/visitors/areas/duration', parameters)
         .then(response => {
           for (var x = 0; x < response.data.length; x++) {
             areas[x].dwellTime = response.data[x].dwellTime
@@ -114,6 +114,15 @@ export default class DataController {
           }
 
           resolve(areas)
+        })
+        .catch(error => reject(error))
+    })
+  }
+  getRouterLastSeenData () {
+    return new Promise((resolve, reject) => {
+      this.api.get('tracking-ingestion-service/routers/lastSeen')
+        .then(response => {
+          resolve(response.data)
         })
         .catch(error => reject(error))
     })

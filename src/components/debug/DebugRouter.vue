@@ -2,10 +2,10 @@
   <div class="module" :class="{active: lastSeenTimeInSeconds<30, error: lastSeenTimeInSeconds>=30}">
     <span class="point"></span>
     <div class="name">
-      {{router.mac}}
+      {{router.routerId}}
     </div>
     <div class="line"></div>
-    <div class="time" :title="router.lastseen">
+    <div class="time" :title="router.lastSeen">
       Last seen <b>{{lastSeenTimeInSeconds}}</b> seconds ago.
     </div>
 
@@ -19,7 +19,7 @@ export default {
       type: Object
     }
   },
-  data(){
+  data () {
     return {
       lastSeenTimeInSeconds: 0
     }
@@ -27,12 +27,12 @@ export default {
   mounted () {
     setInterval(() => {
       this.getTimeDifferenceInSeconds()
-    }, 1000);
+    }, 1000)
     this.getTimeDifferenceInSeconds()
   },
   methods: {
     getTimeDifferenceInSeconds () {
-      this.lastSeenTimeInSeconds = Math.floor((new Date().getTime() - new Date(this.router.lastseen).getTime()) / 1000)
+      this.lastSeenTimeInSeconds = Math.floor((new Date().getTime() - new Date(this.router.lastSeen).getTime()) / 1000)
     }
   }
 }
