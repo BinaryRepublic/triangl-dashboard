@@ -5,9 +5,13 @@
 </template>
 
 <script>
-
 export default {
-  name: 'App'
+  name: 'App',
+  beforeMount () {
+    if (!this.$auth.isAuthenticated()) {
+      this.$auth.getAccessTokenOrLogin()
+    }
+  }
 }
 </script>
 
@@ -29,8 +33,6 @@ export default {
   src: url('./assets/fonts/Lato-Italic.ttf')
 }
 html{
-  font-family: 'lato-regular', sans-serif;
-  font-size: 16px;
   box-sizing: border-box;
   background-color: rgb(238, 238, 238);
 }

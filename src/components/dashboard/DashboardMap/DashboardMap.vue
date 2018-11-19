@@ -32,7 +32,7 @@ export default {
     }
   },
   beforeMount () {
-    this.controller = new DataController(this.$api)
+    this.controller = new DataController(this.$api, this.$auth)
   },
   mounted () {
     const canvas = d3.select('.canvasBox').call(d3.zoom().scaleExtent([1, 5]).on('zoom', this.zoom))

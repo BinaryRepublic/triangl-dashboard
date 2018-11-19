@@ -8,9 +8,11 @@ import VueResource from 'vue-resource'
 import axios from 'axios'
 import { MdButton } from 'vue-material/dist/components'
 import 'vue-material/dist/vue-material.min.css'
+import AuthController from './controllers/AuthController'
 const config = require('../config')
 
 Vue.prototype.$api = axios.create({ baseURL: config.API_ENDPOINT.live })
+Vue.prototype.$auth = new AuthController()
 
 Vue.config.devtools = true
 

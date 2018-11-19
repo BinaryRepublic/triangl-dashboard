@@ -1,6 +1,22 @@
 export default class DataController {
-  constructor (api) {
+  constructor (api, auth0) {
     this.api = api
+    this.auth0 = auth0
+  }
+  post (url, params = {}) {
+    return new Promise((resolve, reject) => {
+      this.auth0.getAccessTokenOrLogin()
+        .then(accessToken => {
+          this.api.post(url, {...params}, {
+            headers: {
+              'Authorization': `Bearer ${accessToken}`
+            }
+          })
+            .then(resolve)
+            .catch(reject)
+        })
+        .catch(reject)
+    })
   }
   getActiveCustomersData (parameters) {
     return new Promise((resolve, reject) => {
