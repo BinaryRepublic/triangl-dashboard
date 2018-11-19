@@ -36,7 +36,7 @@ export default {
         dataPointCount: 1
       }
 
-      if (this.area !== undefined) data.corners = { corners: this.area.points }
+      if (this.area !== undefined) data.area = { corners: this.area.points }
 
       return data
     },

@@ -6,7 +6,7 @@
       <ActiveCustomers :area="this.spaceData" :selectedDateRangeActive="selectedDateRangeActive" @updateSubtitle="(value) => { this.activeCustomersSubtitle = value; }"/>
     </Module>
     <Module componentWidth="one" componentHeight="one" title="Length of Stay" :subtitle="lengthOfStaySubtitle">
-      <LengthOfStay :selectedDateRange="selectedDateRange" @updateSubtitle="(value) => { this.lengthOfStaySubtitle = value; }"/>
+      <LengthOfStay :area="this.spaceData" :selectedDateRange="selectedDateRange" @updateSubtitle="(value) => { this.lengthOfStaySubtitle = value; }"/>
     </Module>
     <Module componentWidth="one" componentHeight="one" title="Durchlaufsrate" :subtitle="dlrSubtitle">
       
