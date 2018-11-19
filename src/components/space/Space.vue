@@ -1,19 +1,18 @@
 <template>
   <div class="container-content">
     <DatePicker @selectedDateRange="getSelectedDateRange" />
-    {{ spaceData }}
     <div class="clear"></div>
-    <Module componentWidth="one" componentHeight="one">
-      <ActiveCustomers/>
+    <Module componentWidth="one" componentHeight="one" title="Active Customers" :subtitle="activeCustomersSubtitle" type="blue">
+      <ActiveCustomers :area="this.spaceData" :selectedDateRangeActive="selectedDateRangeActive" @updateSubtitle="(value) => { this.activeCustomersSubtitle = value; }"/>
     </Module>
-    <Module componentWidth="one" componentHeight="one">
-      Aufenthaltsdauer
+    <Module componentWidth="one" componentHeight="one" title="Length of Stay" :subtitle="lengthOfStaySubtitle">
+      <LengthOfStay :selectedDateRange="selectedDateRange" @updateSubtitle="(value) => { this.lengthOfStaySubtitle = value; }"/>
     </Module>
-    <Module componentWidth="one" componentHeight="one">
-      Durchlaufsrate
+    <Module componentWidth="one" componentHeight="one" title="Durchlaufsrate" :subtitle="dlrSubtitle">
+      
     </Module>
-    <Module componentWidth="one">
-      Peak Hours
+    <Module componentWidth="one" title="Peak Hours">
+      <PeakHours :selectedDateRange="selectedDateRange" />
     </Module>
     <Module componentWidth="two">
       Flow Diagram
@@ -24,11 +23,14 @@
 <script>
 import Module from '../shared/ModuleTemplate/ModuleTemplate'
 import ActiveCustomers from '../shared/ActiveCustomers/ActiveCustomers'
+import LengthOfStay from '../shared/LengthOfStay/LengthOfStay'
 import PeakHours from '../shared/PeakHours/PeakHours'
 import DatePicker from '../shared/DatePicker/DatePicker'
 
+var n = new Date()
+
 export default {
-  components: { DatePicker, PeakHours, ActiveCustomers, Module },
+  components: { DatePicker, PeakHours, ActiveCustomers, LengthOfStay, Module },
   props: {
     id: {
       type: String
@@ -46,6 +48,18 @@ export default {
   },
   data () {
     return {
+      selectedDateRange: {
+        startDate: new Date(n.getFullYear(), n.getMonth(), n.getDate() - 6).toISOString(),
+        endDate: new Date(n.getFullYear(), n.getMonth(), n.getDate(), 23, 59, 59).toISOString(),
+        timeZoneDifference: 0
+      },
+      selectedDateRangeActive: {
+        startDate: new Date(n.getFullYear(), n.getMonth(), n.getDate(), n.getHours() - 1, n.getMinutes(), n.getSeconds(), n.getMilliseconds()).toISOString(),
+        endDate: n.toISOString()
+      },
+      activeCustomersSubtitle: '...',
+      lengthOfStaySubtitle: '...',
+      dlrSubtitle: '...'
     }
   },
   methods: {
