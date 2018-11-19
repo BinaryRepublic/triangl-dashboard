@@ -44,6 +44,7 @@ export default {
       var x = d3.event.clientX - rect.left
       var y = d3.event.clientY - rect.top
       var isArea = false
+      var clickedArea = undefined
       for (var k = 0; k < that.areas.length; k++) {
         var area = that.areas[k]
         amountVertices = area.points.length
@@ -54,12 +55,13 @@ export default {
           arrayValuesY.push(area.points[i].y)
         }
         if (that.pInPoly(amountVertices, arrayValuesX, arrayValuesY, x, y)) {
+          clickedArea = area
           isArea = true
         }
       }
 
       if (isArea === true) {
-        let encoded = Buffer.from(JSON.stringify(arrayValuesX)).toString('base64')
+        let encoded = Buffer.from(JSON.stringify(clickedArea)).toString('base64')
         that.$router.push('/space/' + encoded)
       }
     })
