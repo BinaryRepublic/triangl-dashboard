@@ -1,11 +1,11 @@
 <template>
   <div id="container">
+    <div id="heatmap"/>
     <div id="legend-container">
       <div id="legend"/>
       <div id="legend-text-left"><font size="-1">0</font></div>
       <div id="legend-text-right"><font size="-1">1000+</font></div>
     </div>
-    <div id="heatmap"/>
   </div>
 </template>
 
@@ -15,12 +15,12 @@ import DataController from '../../../controllers/DataController'
 
 export default {
   props: {
-    selected: {
+    selectedDateRange: {
       type: Object
     }
   },
   watch: {
-    selected: {
+    selectedDateRange: {
       handler: function (val) {
         this.requestData.from = val.startDate
         this.requestData.to = val.endDate
@@ -34,13 +34,14 @@ export default {
   },
   mounted () {
     this.loadData()
+    setInterval(this.loadData, 300000)
   },
   data () {
     return {
       requestData: {
         customerId: 'c1',
-        from: this.selected.startDate,
-        to: this.selected.endDate
+        from: this.selectedDateRange.startDate,
+        to: this.selectedDateRange.endDate
       }
     }
   },

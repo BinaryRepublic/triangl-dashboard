@@ -1,11 +1,11 @@
 <template>
   <div>
-    <header>
-      <section class="container">
-        <h1 class="header-title">{{title}}</h1>
-      </section>
-    </header>
-  </div>
+   <header>
+  <section class="container">
+    <h1 class="header-title">{{title}}</h1>
+  </section>
+</header>
+</div>
 </template>
 
 <script>

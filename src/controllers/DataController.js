@@ -51,7 +51,7 @@ export default class DataController {
                 obj = {x: dayVal, y: '10am', heat: value.average}
               } else if (hours === 12 || hours === 13) {
                 obj = {x: dayVal, y: '12pm', heat: value.average}
-              } else if (hours === 14 || hours == 15) {
+              } else if (hours === 14 || hours === 15) {
                 obj = {x: dayVal, y: '2pm', heat: value.average}
               } else if (hours === 16 || hours === 17) {
                 obj = {x: dayVal, y: '4pm', heat: value.average}
@@ -76,7 +76,6 @@ export default class DataController {
     return new Promise((resolve, reject) => {
       this.api.post('visitors/count', parameters)
         .then(response => {
-          console.log(response.data)
           chartData.labels = []
           chartData.datasets[0].data = []
           const data = response.data
@@ -85,16 +84,12 @@ export default class DataController {
           for (var x = 0; x < data.data.length; x++) {
             chartData.datasets[0].data.push(data.data[x].count)
             if (filterType === 'hours') {
-              console.log(data.data[x].to)
               dateToIso = data.data[x].to
-              console.log(dateToIso)
               dateToObj = new Date(dateToIso)
-              console.log(dateToObj)
               newDateHour = dateToObj.getHours() + 1
               if (newDateHour.toString().length === 1) {
                 newDateHour = '0' + newDateHour
               }
-              console.log(newDateHour)
               chartData.labels.push(newDateHour + ':00')
             } else if (filterType === 'days') {
               dateToIso = data.data[x].to
@@ -113,9 +108,9 @@ export default class DataController {
     return new Promise((resolve, reject) => {
       this.api.post('visitors/areas/duration', parameters)
         .then(response => {
-          console.log(response)
           for (var x = 0; x < response.data.length; x++) {
             areas[x].dwellTime = response.data[x].dwellTime
+            areas[x].customerCount = response.data[x].customerCount
           }
 
           resolve(areas)
