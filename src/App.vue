@@ -5,10 +5,12 @@
 </template>
 
 <script>
+import { route as authCallbackRoute } from './components/authCallback/constants'
+
 export default {
   name: 'App',
   beforeMount () {
-    if (!this.$auth.isAuthenticated()) {
+    if (this.$route.path !== authCallbackRoute && !this.$auth.isAuthenticated()) {
       this.$auth.getAccessTokenOrLogin()
     }
   }
