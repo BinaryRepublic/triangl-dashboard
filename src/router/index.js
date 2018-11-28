@@ -7,6 +7,7 @@ import Space from '../pages/space.vue'
 import Spaces from '../pages/spaces.vue'
 import Account from '../pages/account.vue'
 import Debug from '../pages/debug.vue'
+import { route as authCallbackRoute } from '../components/authCallback/constants'
 
 Vue.use(Router)
 
@@ -23,7 +24,7 @@ export default new Router({
           component: Dashboard
         },
         {
-          path: '/callback',
+          path: authCallbackRoute,
           name: 'Callback',
           component: Callback
         },
