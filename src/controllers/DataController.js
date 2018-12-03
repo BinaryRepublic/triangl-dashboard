@@ -147,7 +147,7 @@ export default class DataController {
     parameters.mapId = '3f18f9da-93d1-4319-95bd-702d24f48708'
 
     return new Promise((resolve, reject) => {
-      this.api.post('visitors/areas/duration', parameters)
+      this.post('dashboard-service/visitors/areas/duration', parameters)
         .then(response => {
           let area = response.data[0]
           resolve(Math.floor(area.dwellTime / 60) + ':' + ('0' + Math.floor(area.dwellTime % 60)).slice(-2))
