@@ -38,7 +38,7 @@ html{
   box-sizing: border-box;
   background-color: rgb(238, 238, 238);
 }
-body {
+#app{
   font-family: 'lato-regular', sans-serif;
 }
 * {
