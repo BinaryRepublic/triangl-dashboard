@@ -1,5 +1,5 @@
 <template>
-  <div class="module" :class="{active: lastSeenTimeInSeconds<30, error: lastSeenTimeInSeconds>=30}">
+  <div class="moduleDebug" :class="{active: lastSeenTimeInSeconds<30, error: lastSeenTimeInSeconds>=30}">
     <span class="point"></span>
     <div class="name">
       {{router.routerId}}
@@ -38,7 +38,7 @@ export default {
 }
 </script>
 <style lang="less">
-.module{
+.moduleDebug{
   float: left;
   -webkit-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12);
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12);
