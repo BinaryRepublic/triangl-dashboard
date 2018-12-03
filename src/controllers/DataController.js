@@ -18,6 +18,21 @@ export default class DataController {
         .catch(reject)
     })
   }
+  get (url) {
+    return new Promise((resolve, reject) => {
+      this.auth0.getAccessTokenOrLogin()
+        .then(accessToken => {
+          this.api.get(url, {
+            headers: {
+              'Authorization': `Bearer ${accessToken}`
+            }
+          })
+            .then(resolve)
+            .catch(reject)
+        })
+        .catch(reject)
+    })
+  }
   getActiveCustomersData (parameters) {
     return new Promise((resolve, reject) => {
       this.post('dashboard-service/visitors/count', parameters)
@@ -155,5 +170,13 @@ export default class DataController {
         .catch(error => reject(error))
     })
   }
-
+  getCustomerData (customerId) {
+    return new Promise((resolve, reject) => {
+      this.get('dashboard-service/customers/' + customerId)
+        .then(response => {
+          resolve(response.data)
+        })
+        .catch(error => reject(error))
+    })
+  }
 }
