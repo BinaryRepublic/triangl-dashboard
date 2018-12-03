@@ -30,3 +30,15 @@ export default {
   }
 }
 </script>
+
+<style lang="less">
+  .btn {
+    padding: 3px;
+    border-color: rgb(96, 197, 255);
+    border-radius: 5px;
+    &:hover{
+      cursor: pointer;
+    }
+  }
+</style>
+
