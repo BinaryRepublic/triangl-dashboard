@@ -127,12 +127,16 @@ export default {
         })
     },
     createImage () {
-      const result = getImageSizeAndPos(imageRatio, this.canvasWidth, this.canvasHeight)
-      backgroundImage = new Image()
-      backgroundImage.src = '../static/campus.svg'
-      backgroundImage.onload = () => {
-        context.drawImage(backgroundImage, result.posX, result.posY, result.width, result.height)
-      }
+      this.controller.getCustomerData('fcef66a8-d97d-42e2-848e-c26f236a0d5b')
+      .then(response => {
+        const svgUrl = response.maps[0].svgPath
+        const result = getImageSizeAndPos(imageRatio, this.canvasWidth, this.canvasHeight)
+        backgroundImage = new Image()
+        backgroundImage.src = svgUrl
+        backgroundImage.onload = () => {
+          context.drawImage(backgroundImage, result.posX, result.posY, result.width, result.height)
+        }
+      })
     },
     drawRect () {
       // for (var k in opacities) {
