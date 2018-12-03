@@ -38,7 +38,8 @@ export default {
       display: block;
       width: 35px;
       height: 35px;
-      background: url('../../../static/triangl_Bildmarke.png') no-repeat;
+      background-image: url('../../../static/triangl_Bildmarke.png');
+      background-repeat: no-repeat;
       margin-top: 7.5px;
     }
     .header-title{
