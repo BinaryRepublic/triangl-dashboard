@@ -3,10 +3,10 @@
     <div class="canvasWrapper">
       <canvas class="canvasBox" :width="canvasWidth" :height="canvasHeight" ></canvas>
     </div>
-    <div class="sideBar">
+    <div class="sideBar" v-if="hoveredArea.dwellTime">
       <p>Average Dwelltime: {{ hoveredArea.dwellTime }}</p>
     </div>
-    <div class="sideBar">
+    <div class="sideBar" v-if="hoveredArea.customerCount">
       <p>Amount of Customers: {{ hoveredArea.customerCount }}</p>
     </div>
   </div>
@@ -44,7 +44,7 @@ export default {
       var x = d3.event.clientX - rect.left
       var y = d3.event.clientY - rect.top
       var isArea = false
-      var clickedArea = undefined
+      var clickedArea
       for (var k = 0; k < that.areas.length; k++) {
         var area = that.areas[k]
         amountVertices = area.points.length
