@@ -19,7 +19,6 @@ export default {
 </script>
 <style lang="less">
 body {
-  font-family: 'lato-regular', sans-serif;
   font-size: 16px;
 }
 .container {

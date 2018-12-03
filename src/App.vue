@@ -38,6 +38,9 @@ html{
   box-sizing: border-box;
   background-color: rgb(238, 238, 238);
 }
+body {
+  font-family: 'lato-regular', sans-serif;
+}
 * {
   margin: 0;
   padding: 0;
