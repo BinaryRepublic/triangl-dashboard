@@ -71,10 +71,9 @@ export default {
       }
     }
     .auth-wrapper {
-      position: absolute;
-      right: 60px;
-      top: 50%;
+      float: right;
       transform: translateY(-50%);
+      margin-top: 25px;
     }
     .user{
       float: right;
@@ -82,7 +81,8 @@ export default {
       height: 30px;
       width: 30px;
       background: url('../../../static/user.svg') no-repeat;
-      margin-top: 10px;
+      margin-top: 14px;
+      margin-right: 10px;
     }
   }
 </style>
