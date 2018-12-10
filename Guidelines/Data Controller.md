@@ -2,7 +2,7 @@
 
 Requests should not be sent from every individual components but from a controller class named *DataController*.
 
-####Example
+#### Example
 
 ```javascript
 getActiveCustomersData (parameters) {
@@ -34,7 +34,7 @@ While writing tests, mock classes can be passed here instead to send fake respon
 
 
 
-####Visual Diagram
+#### Visual Diagram
 
 ![Visual Diagram](https://duaw26jehqd4r.cloudfront.net/items/0E1N2r393Q1X1R140M08/Untitled%20Diagram-2.jpg?v=d03ab9ed)
 
