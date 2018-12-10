@@ -39,6 +39,7 @@ export default {
     context = canvas.node().getContext('2d')
     const that = this
 
+    // Function to route to specifc space if one space in the heat map is clicked.
     canvas.on('click', function () {
       var rect = this.getBoundingClientRect()
       var x = d3.event.clientX - rect.left
@@ -67,6 +68,7 @@ export default {
       }
     })
 
+    // Function to check if mouse is on one of the areas. If yes, dwelltime and amount of customers is need below the map.
     canvas.on('mousemove', function () {
       var rect = this.getBoundingClientRect()
       var x = d3.event.clientX - rect.left
@@ -96,6 +98,7 @@ export default {
     this.loadData()
     setInterval(this.loadData, 300000)
   },
+  // Checks if selected date range from filter changes. If yes, a new api request is made.
   watch: {
     selectedDateRange: {
       handler: function (val) {
@@ -127,22 +130,21 @@ export default {
           this.createImage()
         })
     },
+    // This function loads and draws the image on to the canvas.
     createImage () {
       this.controller.getCustomerData('fcef66a8-d97d-42e2-848e-c26f236a0d5b')
-      .then(response => {
-        const svgUrl = response.maps[0].svgPath
-        const result = getImageSizeAndPos(imageRatio, this.canvasWidth, this.canvasHeight)
-        backgroundImage = new Image()
-        backgroundImage.src = svgUrl
-        backgroundImage.onload = () => {
-          context.drawImage(backgroundImage, result.posX, result.posY, result.width, result.height)
-        }
-      })
+        .then(response => {
+          const svgUrl = response.maps[0].svgPath
+          const result = getImageSizeAndPos(imageRatio, this.canvasWidth, this.canvasHeight)
+          backgroundImage = new Image()
+          backgroundImage.src = svgUrl
+          backgroundImage.onload = () => {
+            context.drawImage(backgroundImage, result.posX, result.posY, result.width, result.height)
+          }
+        })
     },
+    // This function draws all rectangels (areas) on top of the map. The opacity depends of the dwelltime.
     drawRect () {
-      // for (var k in opacities) {
-      //   opacities[k] = 0
-      // }
       var dwellTimes = []
       for (var i = 0; i < this.areas.length; i++) {
         var area = this.areas[i]
@@ -169,6 +171,7 @@ export default {
         context.fill()
       }
     },
+    // This function checks if a point is inside of a polygon.
     pInPoly (nPoints, arrayValuesX, arrayValuesY, pointX, pointY) {
       var i, j
       var c = false
