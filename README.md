@@ -1,6 +1,18 @@
-# sixth_sense
+# Triangl Dashboard
 
-> A Vue.js project
+> Triangl dashboard to display KPIs of an offline business.
+
+## Guidelines
+
+- Git
+  - [Rules](https://github.com/codeuniversity/triangl-dashboard/blob/develop/Guidelines/Authentication%20Gate.md#authentication-gate)
+  - [Workflow](https://github.com/codeuniversity/triangl-dashboard/blob/develop/Guidelines/General.md#workflow)
+- Guidelines
+  * [Code Style](https://github.com/codeuniversity/triangl-dashboard/blob/develop/Guidelines/General.md#code-style)
+- Documentation
+  * [Data Controller](https://github.com/codeuniversity/triangl-dashboard/blob/develop/Guidelines/Data%20Controller.md#data-controller)
+  * [Authentcation Gate](https://github.com/codeuniversity/triangl-dashboard/blob/develop/Guidelines/Authentication%20Gate.md#authentication-gate)
+  * [Date Filter Controller](https://github.com/codeuniversity/triangl-dashboard/blob/develop/Guidelines/Date%20Filter%20Controller.md#date-filter-controller)
 
 ## Build Setup
 
