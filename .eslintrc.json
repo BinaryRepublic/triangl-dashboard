@@ -1,0 +1,20 @@
+{
+  "root": true,
+  "parserOptions": {
+    "parser": "babel-eslint"
+  },
+  "extends": [
+    "plugin:vue/essential",
+    "standard"
+  ],
+  "env": {
+      "browser": true,
+      "mocha": true
+  },
+  "plugins": [
+    "vue"
+  ],
+  "rules": {
+    "generator-star-spacing": "off"
+  }
+}
