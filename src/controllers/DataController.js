@@ -4,6 +4,7 @@ export default class DataController {
     this.auth0 = auth0
   }
   post (url, params = {}) {
+    // This function sends a POST request to the backend with the bearer authentication token
     return new Promise((resolve, reject) => {
       this.auth0.getAccessTokenOrLogin()
         .then(accessToken => {
@@ -19,6 +20,7 @@ export default class DataController {
     })
   }
   get (url) {
+    // This function sends a GET request to the backend with the bearer authentication token
     return new Promise((resolve, reject) => {
       this.auth0.getAccessTokenOrLogin()
         .then(accessToken => {
@@ -34,6 +36,7 @@ export default class DataController {
     })
   }
   getActiveCustomersData (parameters) {
+    // This function returns a Promise that resolves with the customers count
     return new Promise((resolve, reject) => {
       this.post('dashboard-service/visitors/count', parameters)
         .then(response => {
@@ -43,6 +46,7 @@ export default class DataController {
     })
   }
   getPeekHoursData (parameters) {
+    // This function returns data that are needed to configure Peek Hours chart
     return new Promise((resolve, reject) => {
       this.post('dashboard-service/visitors/byTimeOfDay/average', parameters)
         .then(response => {
@@ -61,6 +65,7 @@ export default class DataController {
 
             const dayVal = block.day.substring(0, 3)
 
+            // we need to create an object for every entry and the append it to the chart data array
             for (let n in block.values) {
               let value = block.values[n]
               let from = value.from
@@ -104,6 +109,7 @@ export default class DataController {
     })
   }
   getCountCustomersData (parameters, chartData, filterType) {
+    // This function returns a promise that resolves with updated chart data and total amount of customers
     return new Promise((resolve, reject) => {
       this.post('dashboard-service/visitors/count', parameters)
         .then(response => {
@@ -136,6 +142,7 @@ export default class DataController {
     })
   }
   getMapData (parameters, areas) {
+    // This function returns a promise that resolves with updated areas array
     return new Promise((resolve, reject) => {
       this.post('dashboard-service/visitors/areas/duration', parameters)
         .then(response => {
@@ -159,6 +166,7 @@ export default class DataController {
     })
   }
   getLengthOfStay (parameters) {
+    // This function returns a promise that resolves with a time string representing Length of Stay
     parameters.mapId = '3f18f9da-93d1-4319-95bd-702d24f48708'
 
     return new Promise((resolve, reject) => {
@@ -171,6 +179,7 @@ export default class DataController {
     })
   }
   getCustomerData (customerId) {
+    // This function returns a promise that resolves with an object that contains the customer data
     return new Promise((resolve, reject) => {
       this.get('dashboard-service/customers/' + customerId)
         .then(response => {
