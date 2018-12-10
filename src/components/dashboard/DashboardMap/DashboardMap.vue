@@ -56,6 +56,7 @@ export default {
         }
         if (that.pInPoly(amountVertices, arrayValuesX, arrayValuesY, x, y)) {
           clickedArea = area
+          console.log(clickedArea)
           isArea = true
         }
       }
