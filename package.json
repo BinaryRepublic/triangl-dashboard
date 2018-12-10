@@ -7,11 +7,8 @@
   "scripts": {
     "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
     "start": "npm run dev",
-    "unit": "./node_modules/jest/bin/jest.js --env=node test/unit/",
-    "verboseunit": "./node_modules/jest/bin/jest.js --verbose --env=node test/unit/",
-    "e2e": "node test/e2e/runner.js",
-    "test": "npm run unit",
-    "lint": "eslint --ext .js,.vue src test/unit test/e2e/specs",
+    "test": "./node_modules/jest/bin/jest.js --env=node test/unit/",
+    "lint": "./node_modules/eslint/bin/eslint.js --ignore-path .gitignore .",
     "build": "node build/build.js"
   },
   "dependencies": {
