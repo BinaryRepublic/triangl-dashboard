@@ -6,7 +6,7 @@ const path = require('path')
 
 module.exports = {
   API_ENDPOINT: {
-    live: 'https://api.triangl.io/'
+    live: 'http://api.triangl.local.io/'
   },
   dev: {
     // Paths
