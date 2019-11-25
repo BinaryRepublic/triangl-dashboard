@@ -58,8 +58,9 @@ export default class AuthController {
     if (this.redirectPending) return
 
     this.state = this.getState(true)
-    const { codeChallenge } = this.getPKSETokens(true)
+    const { codeChallenge, codeVerifier } = this.getPKSETokens(true)
     this.codeChallenge = codeChallenge
+    this.codeVerifier = codeVerifier
 
     this.redirectPending = true
     window.location.replace(`${host}/auth/authorize` +
