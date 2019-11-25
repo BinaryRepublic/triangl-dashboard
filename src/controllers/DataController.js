@@ -1,12 +1,12 @@
 export default class DataController {
-  constructor (api, auth0) {
+  constructor (api, auth) {
     this.api = api
-    this.auth0 = auth0
+    this.auth = auth
   }
   post (url, params = {}) {
     // This function sends a POST request to the backend with the bearer authentication token
     return new Promise((resolve, reject) => {
-      this.auth0.getAccessTokenOrLogin()
+      this.auth.getAccessTokenOrLogin()
         .then(accessToken => {
           this.api.post(url, {...params}, {
             headers: {
@@ -22,7 +22,7 @@ export default class DataController {
   get (url) {
     // This function sends a GET request to the backend with the bearer authentication token
     return new Promise((resolve, reject) => {
-      this.auth0.getAccessTokenOrLogin()
+      this.auth.getAccessTokenOrLogin()
         .then(accessToken => {
           this.api.get(url, {
             headers: {

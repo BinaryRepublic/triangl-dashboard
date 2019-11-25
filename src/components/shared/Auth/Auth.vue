@@ -1,5 +1,6 @@
 <template>
   <div class="auth">
+    {{ email }}
     <button
       class="btn btn-primary btn-margin"
       v-if="authenticated"
@@ -15,18 +16,27 @@ export default {
   data () {
     this.$auth.authNotifier.on('authChange', authState => {
       this.authenticated = authState.authenticated
+      this.setEmail()
     })
     return {
-      authenticated: null
+      authenticated: null,
+      email: null
     }
   },
   methods: {
+    setEmail () {
+      const idToken = this.$auth.getParsedIdToken()
+      this.email = idToken ? idToken.email : ''
+    },
     logout () {
       this.$auth.logout()
     }
   },
   beforeMount () {
     this.authenticated = this.$auth.authenticated
+  },
+  mounted () {
+    this.setEmail()
   }
 }
 </script>
