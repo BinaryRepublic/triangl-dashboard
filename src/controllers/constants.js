@@ -1,8 +1,8 @@
 export const authConfig = {
-  host: 'http://localhost:3000',
+  host: 'http://api.triangl.local.io/auth-service',
   clientID: 'TRIANGL_WEB_APP',
   responseType: 'token id_token',
-  audience: 'https://api.triangl.io/dashboard-service',
+  audience: 'http://api.triangl.local.io/dashboard-service',
   callbackUrl: '/callback',
   successUrl: '/'
 }
